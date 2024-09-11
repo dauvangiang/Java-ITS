@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class Main {
+public class Ex3_Caculator {
     public static void main(String[] args) {
         Scanner inp = new Scanner(System.in);
 
@@ -18,23 +18,23 @@ public class Main {
 
         double res = 0;
         switch (opt) {
-            case '+':
+            case '+': // Nếu là phép cộng (+)
                 res = a + b;
                 break;
-            case '-':
+            case '-': // Nếu là phép trừ (-)
                 res = a - b;
                 break;
-            case 'x':
+            case 'x': // Nếu là phép nhân (x)
                 res = a * b;
                 break;
-            case ':':
+            case ':': // Nếu là phép chia (:)
                 res = a / b;
                 break;
-            default:
+            default: // Nếu người dùng chọn bất kỳ ký tự nào không hợp lệ
                 System.out.println("Không có phép toán tương ứng!");
                 return;
         }
 
-        System.out.printf("Kết quả: %f %c %f = %f", a, opt, b, res);
+        System.out.println("Kết quả: " + a + " " + opt + " " + b + " = " + res);
     }
 }
