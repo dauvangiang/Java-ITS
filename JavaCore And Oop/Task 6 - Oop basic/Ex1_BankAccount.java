@@ -55,6 +55,8 @@ class BankAccount {
     //Constructor
     // Hàm tạo mặc định
     public BankAccount() {
+        //this: đại diện cho đối tượng hiện tại
+        //this.<attribute>: gọi đến thuộc tính của đối tượng hiện tại
         this.accountNumber = "000000";
         this.balance = 0;
         System.out.print("Xin chào: 000000");

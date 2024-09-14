@@ -22,14 +22,11 @@ public class Ex2_Fraction {
 }
 
 class Fraction {
+    // Thuộc tính của lớp
     private int numerator;
     private int denominator;
 
-    //Constructor
-    public Fraction() {
-        this.numerator = 0;
-        this.denominator = 1;
-    }
+    //Hàm tạo có tham số
     public Fraction(int numerator, int denominator) throws ArithmeticException {
         if (denominator == 0) {
             throw new ArithmeticException("Khởi tạo phân số không thành công. Mẫu số không được âm!");
@@ -43,6 +40,7 @@ class Fraction {
         }
     }
 
+    // Các phương thức
     public Fraction add(Fraction f) {
         int numerator = this.numerator*f.denominator + f.numerator*this.denominator;
         int denominator = this.denominator * f.denominator;
