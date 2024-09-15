@@ -4,22 +4,20 @@ import java.util.Scanner;
 public class Ex1_BMI {
     // Hàm tính chỉ số BMI từ chiều cao và cân nặng
     public static float BMI(float height, float weight) {
-        final float bmi = weight / (height * height); //Tính chỉ số BMI và gán cho biến bmi (Kiểu số thực)
-        return bmi; // Trả về kết quả
+        return weight / (height * height);
     }
 
     public static void main(String[] args) {
         // Tạo đối tượng của lớp Scanner để sử dụng các phương thức đọc đầu vào
         Scanner inp = new Scanner(System.in);
 
+        //Đọc giá trị đầu vào kiểu số thực gán cho biến
         System.out.print("Nhập chiều cao (m): ");
-        float height = inp.nextFloat(); //Đọc giá trị đầu vào kiểu số thực gán cho biến height
+        float height = inp.nextFloat();
         System.out.print("Nhập cân nặng (kg): ");
-        float weight = inp.nextFloat(); //Đọc giá trị đầu vào kiểu số thực gán cho biến weight
+        float weight = inp.nextFloat();
 
-        //Gọi hàm BMI tính chỉ só BMI và gán cho biến bmi (kiểu số thực)
         final float bmi = BMI(height, weight);
-
         System.out.println("Chỉ số BMI là: " + BMI(height, weight));
 
         // Khởi tạo biến res kiểu String và gán giá trị ban đầu là "bình thường"

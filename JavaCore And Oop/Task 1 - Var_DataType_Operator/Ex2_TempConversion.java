@@ -3,12 +3,12 @@ import java.util.Scanner;
 public class Ex2_TempConversion {
     // Hàm chuyển đổi nhiệt độ từ Celsius sang Fahrenheit
     public static float cToF(float value) {
-        return value * 9/5 + 32; //Công thức chuyển đổi C -> F
+        return value * 9/5 + 32;
     }
 
     // Hàm chuyển đổi nhiệt độ từ Fahrenheit sang Celsius
     public static float fToC(float value) {
-        return (value - 32) * 5/9; //Công thức chuyển đổi F -> C
+        return (value - 32) * 5/9;
     }
 
     public static void main(String[] args) {
