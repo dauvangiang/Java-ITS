@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  **  Trên class: định nghĩa URL cơ sở cho tất cả phương thức bên trong
  **  Trên phương thức: định nghĩa URL cụ thể và kiểu yêu cầu HTTP (GET, POST, DELETE/...cho các phương thức
  */
-@RequestMapping("/hello")
+@RequestMapping("/")
 public class HelloController {
     @GetMapping //HTTP GET == @RequestMapping(method = RequestMethod.GET)
     public String hello() {
@@ -25,5 +25,4 @@ public class HelloController {
     public String hello(@RequestBody User user) {
         return "Hello, My name is " + user.getName() + ".\nMy phone number is " + user.getPhone();
     }
-
 }
