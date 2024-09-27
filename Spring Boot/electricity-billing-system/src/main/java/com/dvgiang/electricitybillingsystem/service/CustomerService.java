@@ -2,7 +2,6 @@ package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,8 +9,11 @@ import java.util.Optional;
 
 @Service
 public class CustomerService {
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
+
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     //Get all customers
     public List<Customer> getAllCustomers() {
@@ -19,8 +21,8 @@ public class CustomerService {
     }
 
     //Get customer by id
-    public Optional<Customer> getCustomerById(Long id) {
-        return customerRepository.findById(id);
+    public Customer getCustomerById(Long id) {
+        return customerRepository.findById(id).get();
     }
 
     //Create new customer

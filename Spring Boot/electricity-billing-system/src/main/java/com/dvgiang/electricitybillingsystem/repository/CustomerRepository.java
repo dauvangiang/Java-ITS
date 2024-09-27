@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 //Đối tượng được quản lý: Customer
 //Kiểu dữ liệu của khóa chính: Long
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
-
 }
