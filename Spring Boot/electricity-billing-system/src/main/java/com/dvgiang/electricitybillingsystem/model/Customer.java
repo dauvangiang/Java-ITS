@@ -1,12 +1,16 @@
 package com.dvgiang.electricitybillingsystem.model;
 
-public class Customer {
-    private int id;
-    private String name;
-    private Address address;
-    private String phone;
+import jakarta.persistence.*;
 
-    public Customer() {}
+@Entity
+public class Customer {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+    private String phone;
+    private String address;
 
     public long getId() {
         return id;
@@ -29,18 +33,10 @@ public class Customer {
     }
 
     public String getAddress() {
-        return address.street + " " + address.suite + " " + address.city;
+        return address;
     }
 
-    public void setAddress(String street, String suite, String city) {
-        this.address.street = street;
-        this.address.suite = suite;
-        this.address.city = city;
+    public void setAddress(String address) {
+        this.address = address;
     }
-}
-
-class Address {
-    public String street;
-    public String suite;
-    public String city;
 }

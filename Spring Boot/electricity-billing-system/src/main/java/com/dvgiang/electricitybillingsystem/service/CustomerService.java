@@ -15,26 +15,30 @@ public class CustomerService {
 
     //Get all customers
     public List<Customer> getAllCustomers() {
-        return customerRepository.fillAll();
+        return customerRepository.findAll();
     }
 
     //Get customer by id
-    public Customer getCustomerById(int id) {
+    public Optional<Customer> getCustomerById(Long id) {
         return customerRepository.findById(id);
     }
 
     //Create new customer
-    public boolean createCustomer(Customer customer) {
-        return customerRepository.addCustomer(customer);
+    public Customer createCustomer(Customer customer) {
+        return customerRepository.save(customer);
     }
 
     //Delete customer by id
-    public boolean deleteCustomer(int id) {
-        return customerRepository.deleteCustomer(id);
+    public void deleteCustomer(Long id) {
+        customerRepository.deleteById(id);
     }
 
-    //Update customer infor
-    public boolean updateCustomer(Customer customer) {
-        return customerRepository.updateCustomer(customer);
+    //Update customer info
+    public Customer updateCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
+
+    public boolean isExitsCustomer(Long id) {
+        return customerRepository.existsById(id);
     }
 }
