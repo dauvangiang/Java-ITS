@@ -1,102 +1,148 @@
-[
-  {
-    "id": 1,
-    "name": "Leanne Graham",
-    "address": {
-      "street": "Kulas Light",
-      "suite": "Apt. 556",
-      "city": "Gwenborough"
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "Leanne Graham",
+      "address": {
+        "street": "Kulas Light",
+        "suite": "Apt. 556",
+        "city": "Gwenborough"
+      },
+      "phone": "1-770-736-8031 x56442"
     },
-    "phone": "1-770-736-8031 x56442"
-  },
-  {
-    "id": 2,
-    "name": "Ervin Howell",
-    "address": {
-      "street": "Victor Plains",
-      "suite": "Suite 879",
-      "city": "Wisokyburgh"
+    {
+      "id": 2,
+      "name": "Ervin Howell",
+      "address": {
+        "street": "Victor Plains",
+        "suite": "Suite 879",
+        "city": "Wisokyburgh"
+      },
+      "phone": "010-692-6593 x09125"
     },
-    "phone": "010-692-6593 x09125"
-  },
-  {
-    "id": 3,
-    "name": "Clementine Bauch",
-    "address": {
-      "street": "Douglas Extension",
-      "suite": "Suite 847",
-      "city": "McKenziehaven"
+    {
+      "id": 3,
+      "name": "Clementine Bauch",
+      "address": {
+        "street": "Douglas Extension",
+        "suite": "Suite 847",
+        "city": "McKenziehaven"
+      },
+      "phone": "1-463-123-4447"
     },
-    "phone": "1-463-123-4447"
-  },
-  {
-    "id": 4,
-    "name": "Patricia Lebsack",
-    "address": {
-      "street": "Hoeger Mall",
-      "suite": "Apt. 692",
-      "city": "South Elvis"
+    {
+      "id": 4,
+      "name": "Patricia Lebsack",
+      "address": {
+        "street": "Hoeger Mall",
+        "suite": "Apt. 692",
+        "city": "South Elvis"
+      },
+      "phone": "493-170-9623 x156"
     },
-    "phone": "493-170-9623 x156"
-  },
-  {
-    "id": 5,
-    "name": "Chelsey Dietrich",
-    "address": {
-      "street": "Skiles Walks",
-      "suite": "Suite 351",
-      "city": "Roscoeview"
+    {
+      "id": 5,
+      "name": "Chelsey Dietrich",
+      "address": {
+        "street": "Skiles Walks",
+        "suite": "Suite 351",
+        "city": "Roscoeview"
+      },
+      "phone": "(254)954-1289"
     },
-    "phone": "(254)954-1289"
-  },
-  {
-    "id": 6,
-    "name": "Mrs. Dennis Schulist",
-    "address": {
-      "street": "Norberto Crossing",
-      "suite": "Apt. 950",
-      "city": "South Christy"
+    {
+      "id": 6,
+      "name": "Mrs. Dennis Schulist",
+      "address": {
+        "street": "Norberto Crossing",
+        "suite": "Apt. 950",
+        "city": "South Christy"
+      },
+      "phone": "1-477-935-8478 x6430"
     },
-    "phone": "1-477-935-8478 x6430"
-  },
-  {
-    "id": 7,
-    "name": "Kurtis Weissnat",
-    "address": {
-      "street": "Rex Trail",
-      "suite": "Suite 280",
-      "city": "Howemouth"
+    {
+      "id": 7,
+      "name": "Kurtis Weissnat",
+      "address": {
+        "street": "Rex Trail",
+        "suite": "Suite 280",
+        "city": "Howemouth"
+      },
+      "phone": "210.067.6132"
     },
-    "phone": "210.067.6132"
-  },
-  {
-    "id": 8,
-    "name": "Nicholas Runolfsdottir V",
-    "address": {
-      "street": "Ellsworth Summit",
-      "suite": "Suite 729",
-      "city": "Aliyaview"
+    {
+      "id": 8,
+      "name": "Nicholas Runolfsdottir V",
+      "address": {
+        "street": "Ellsworth Summit",
+        "suite": "Suite 729",
+        "city": "Aliyaview"
+      },
+      "phone": "586.493.6943 x140"
     },
-    "phone": "586.493.6943 x140"
-  },
-  {
-    "id": 9,
-    "name": "Glenna Reichert",
-    "address": {
-      "street": "Dayna Park",
-      "suite": "Suite 449",
-      "city": "Bartholomebury"
+    {
+      "id": 9,
+      "name": "Glenna Reichert",
+      "address": {
+        "street": "Dayna Park",
+        "suite": "Suite 449",
+        "city": "Bartholomebury"
+      },
+      "phone": "(775)976-6794 x41206"
     },
-    "phone": "(775)976-6794 x41206"
-  },
-  {
-    "id": 10,
-    "name": "Clementina DuBuque",
-    "address": {
-      "street": "Kattie Turnpike",
-      "suite": "Suite 198",
-      "city": "Lebsackbury"
+    {
+      "id": 10,
+      "name": "Clementina DuBuque",
+      "address": {
+        "street": "Kattie Turnpike",
+        "suite": "Suite 198",
+        "city": "Lebsackbury"
+      },
+      "phone": "024-648-3804"
+    }
+  ],
+  "configurations": [
+    {
+      "id": 1,
+      "name": "Bậc 1",
+      "minUse": 0,
+      "maxUse": 50,
+      "price": 1806
     },
-    "phone": "024-648-3804"
-  }
-]
+    {
+      "id": 2,
+      "name": "Bậc 2",
+      "minUse": 51,
+      "maxUse": 100,
+      "price": 1866
+    },
+    {
+      "id": 3,
+      "name": "Bậc 3",
+      "minUse": 101,
+      "maxUse": 200,
+      "price": 2167
+    },
+    {
+      "id": 4,
+      "name": "Bậc 4",
+      "minUse": 201,
+      "maxUse": 300,
+      "price": 2729
+    },
+    {
+      "id": 5,
+      "name": "Bậc 5",
+      "minUse": 301,
+      "maxUse": 400,
+      "price": 3050
+    },
+    {
+      "id": 6,
+      "name": "Bậc 6",
+      "minUse": 401,
+      "maxUse": null,
+      "price": 3151
+    }
+  ]
+}
