@@ -1,14 +1,18 @@
 package com.dvgiang.electricitybillingsystem.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 //Đối tượng ánh xạ Request Body khi client thực hiện getHistoryDetail
-public class HistoryRequest {
+public class HistoryDTO {
+    @NotNull(message = "customerId is required!")
     private Long customerId;
+    @NotEmpty(message = "billingPeriod is required!")
     private String billingPeriod;
+    @NotNull(message = "used is required!")
     private Integer used;
 
-    public Long getCustomerId() {
-        return customerId;
-    }
+    public Long getCustomerId() { return customerId; }
 
     public String getBillingPeriod() {
         return billingPeriod;

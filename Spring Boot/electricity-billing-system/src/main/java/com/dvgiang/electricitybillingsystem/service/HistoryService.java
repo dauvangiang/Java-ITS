@@ -1,6 +1,7 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.HistoryRequest;
+import com.dvgiang.electricitybillingsystem.dto.HistoryDTO;
+import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.model.Configuration;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.model.History;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class HistoryService {
@@ -26,18 +28,20 @@ public class HistoryService {
     }
 
     //Tinh tien va luu lai lich su
-    public History getHistoryDetail(HistoryRequest historyRequest) {
+    public History getHistoryDetail(HistoryDTO historyDTO) {
         //Lấy thông tin khach hang theo id
-        Customer customer = customerRepository.findById(historyRequest.getCustomerId()).get();
+        Optional<Customer> customer = customerRepository.findById(historyDTO.getCustomerId());
 
-        System.out.println(customer.getName());
+        if (customer.isEmpty()) {
+            throw new NotFoundException("Customer ID does not exist!");
+        }
 
         //Sắp xếp tăng dần theo giá
         Sort sort = Sort.by(Sort.Direction.ASC, "price");
         List<Configuration> configurations = configurationRepository.findAll(sort);
 
         //Số điện đã dùng
-        int used = historyRequest.getUsed();
+        int used = historyDTO.getUsed();
 
         float totalCost = 0f;
 
@@ -57,8 +61,8 @@ public class HistoryService {
         }
 
         History history = new History();
-        history.setCustomer(customer);
-        history.setBillingPeriod(historyRequest.getBillingPeriod());
+        history.setCustomer(customer.get());
+        history.setBillingPeriod(historyDTO.getBillingPeriod());
         history.setTotalCost(totalCost);
 
         return historyRepository.save(history);
@@ -66,6 +70,7 @@ public class HistoryService {
 
     //Danh sach lich su theo ma khach hang
     public List<History> getListHistoryByCustomerId(Long customerId) {
+
         return historyRepository.findAllByCustomerId(customerId);
     }
 }

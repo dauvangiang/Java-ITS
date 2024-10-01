@@ -26,6 +26,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     //Xác thực
     implementation 'org.hibernate.validator:hibernate-validator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

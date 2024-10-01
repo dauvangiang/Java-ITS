@@ -1,5 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
+import com.dvgiang.electricitybillingsystem.dto.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
@@ -30,7 +31,8 @@ public class CustomerService {
     }
 
     //Create new customer
-    public Customer createCustomer(Customer customer) {
+    public Customer createCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
         return customerRepository.save(customer);
     }
 

@@ -1,5 +1,6 @@
 package com.dvgiang.electricitybillingsystem.model;
 
+import com.dvgiang.electricitybillingsystem.dto.ConfigurationDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +21,14 @@ public class Configuration {
 
     @Column(name = "price")
     private Float price;
+
+    public Configuration() {}
+    public Configuration(String name, Integer minUse, Integer maxUse, Float price) {
+        this.name = name;
+        this.minUse = minUse;
+        this.maxUse = maxUse;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;

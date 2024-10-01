@@ -1,7 +1,12 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
+import com.dvgiang.electricitybillingsystem.dto.ConfigurationDTO;
 import com.dvgiang.electricitybillingsystem.model.Configuration;
+import com.dvgiang.electricitybillingsystem.response.ResponseHandler;
 import com.dvgiang.electricitybillingsystem.service.ConfigurationService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,13 +28,13 @@ public class ConfigurationController {
     }
 
     @GetMapping("/{id}")
-    public Configuration getConfigById(@PathVariable Long id) {
-        return configurationService.getConfigById(id);
+    public ResponseEntity<Object> getConfigById(@PathVariable Long id) {
+        return ResponseHandler.responseBuilder(configurationService.getConfigById(id), HttpStatus.OK, null, null);
     }
 
     @PostMapping("/create")
-    public Configuration createConfig(@RequestBody Configuration configuration) {
-        return configurationService.createConfig(configuration);
+    public Configuration createConfig(@Valid @RequestBody ConfigurationDTO configurationDTO) {
+        return configurationService.createConfig(configurationDTO);
     }
 
     @PostMapping("/update")
