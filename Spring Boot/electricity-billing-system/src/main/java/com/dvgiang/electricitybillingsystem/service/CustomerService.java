@@ -2,11 +2,13 @@ package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.dto.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
+import com.dvgiang.electricitybillingsystem.model.Configuration;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CustomerService {
@@ -16,34 +18,36 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    //Get all customers
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
     }
 
-    //Get customer by id
     public Customer getCustomerById(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
         //Nếu không có bản ghi phù hợp, ném ra ngoại lệ: Not Found
-        if (customerRepository.findById(id).isEmpty()) {
+        if (customer.isEmpty()) {
             throw new NotFoundException("The requested customer does not exist!");
         }
-        return customerRepository.findById(id).get();
+        //Trả về bản ghi được tìm thấy
+        return customer.get();
     }
 
-    //Create new customer
     public Customer createCustomer(CustomerDTO customerDTO) {
         Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
         return customerRepository.save(customer);
     }
 
-    //Delete customer by id
-    public void deleteCustomer(Long id) {
-//        throw new NotFoundException("Khong duoc xoa");
+    public String deleteCustomer(Long id) {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isEmpty()) {
+            return "Customer ID does not exist, so not implement!";
+        }
         customerRepository.deleteById(id);
+        return "Deleted successfully!";
     }
 
-    //Update customer info
-    public Customer updateCustomer(Customer customer) {
+    public Customer updateCustomer(CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
         return customerRepository.save(customer);
     }
 }

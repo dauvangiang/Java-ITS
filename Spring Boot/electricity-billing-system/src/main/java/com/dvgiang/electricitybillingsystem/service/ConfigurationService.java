@@ -24,9 +24,11 @@ public class ConfigurationService {
 
     public Configuration getConfigById(Long id) {
         Optional<Configuration> configuration = configurationRepository.findById(id);
+        //Ném ra ngoại lệ NotFoundException nếu không tồn tại configuration có id tương ứng
         if (configuration.isEmpty()) {
             throw new NotFoundException("Configuration with id = " + id + " does not exist!");
         }
+        //Trả về configuration có id được yêu cầu
         return configuration.get();
     }
 
@@ -35,7 +37,8 @@ public class ConfigurationService {
         return configurationRepository.save(configuration);
     }
 
-    public Configuration updateConfig(Configuration configuration) {
+    public Configuration updateConfig(ConfigurationDTO configurationDTO) {
+        Configuration configuration = new Configuration(configurationDTO.getName(), configurationDTO.getMinUse(), configurationDTO.getMaxUse(), configurationDTO.getPrice());
         return configurationRepository.save(configuration);
     }
 

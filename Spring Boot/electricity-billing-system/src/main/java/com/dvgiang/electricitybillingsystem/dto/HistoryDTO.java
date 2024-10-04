@@ -3,7 +3,6 @@ package com.dvgiang.electricitybillingsystem.dto;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-//Đối tượng ánh xạ Request Body khi client thực hiện getHistoryDetail
 public class HistoryDTO {
     @NotNull(message = "customerId is required!")
     private Long customerId;

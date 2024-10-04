@@ -20,15 +20,15 @@ public class HistoryController {
         this.historyService = historyService;
     }
 
-    //Tim kiem lich su theo ma KH va chu ky thanh toan dien
     @PostMapping("/search")
     public ResponseEntity<Object> getHistoryDetail(@Valid @RequestBody HistoryDTO historyDTO) {
-        return ResponseHandler.responseBuilder(historyService.getHistoryDetail(historyDTO), HttpStatus.OK, null, null);
+        History history = historyService.getHistoryDetail(historyDTO);
+        return ResponseHandler.responseBuilder(history, HttpStatus.OK, null, null);
     }
 
-    //Lây danh sách tất cả lịch sử theo mã khách hàng
     @GetMapping("/search/{customerId}")
-    public List<History> getListHistoryByCustomerId(@PathVariable Long customerId) {
-        return historyService.getListHistoryByCustomerId(customerId);
+    public ResponseEntity<Object> getListHistoryByCustomerId(@PathVariable Long customerId) {
+        List<History> listHistory = historyService.getListHistoryByCustomerId(customerId);
+        return ResponseHandler.responseBuilder(listHistory, HttpStatus.OK, null, null);
     }
 }

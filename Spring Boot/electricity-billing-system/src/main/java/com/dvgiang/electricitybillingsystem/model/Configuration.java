@@ -1,6 +1,5 @@
 package com.dvgiang.electricitybillingsystem.model;
 
-import com.dvgiang.electricitybillingsystem.dto.ConfigurationDTO;
 import jakarta.persistence.*;
 
 @Entity

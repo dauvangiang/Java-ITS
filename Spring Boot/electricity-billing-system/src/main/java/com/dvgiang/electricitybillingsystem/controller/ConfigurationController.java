@@ -23,23 +23,27 @@ public class ConfigurationController {
 
     //
     @GetMapping
-    public List<Configuration> getAllConfigurations() {
-        return configurationService.getAllConfigurations();
+    public ResponseEntity<Object> getAllConfigurations() {
+        List<Configuration> listConfiguration = configurationService.getAllConfigurations();
+        return ResponseHandler.responseBuilder(listConfiguration, HttpStatus.OK, null, null);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getConfigById(@PathVariable Long id) {
-        return ResponseHandler.responseBuilder(configurationService.getConfigById(id), HttpStatus.OK, null, null);
+        Configuration configuration = configurationService.getConfigById(id);
+        return ResponseHandler.responseBuilder(configuration, HttpStatus.OK, null, null);
     }
 
     @PostMapping("/create")
-    public Configuration createConfig(@Valid @RequestBody ConfigurationDTO configurationDTO) {
-        return configurationService.createConfig(configurationDTO);
+    public ResponseEntity<Object> createConfig(@Valid @RequestBody ConfigurationDTO configurationDTO) {
+        Configuration configuration = configurationService.createConfig(configurationDTO);
+        return ResponseHandler.responseBuilder(configuration, HttpStatus.OK, null, null);
     }
 
     @PostMapping("/update")
-    public Configuration updateConfig(@RequestBody Configuration configuration) {
-        return configurationService.updateConfig(configuration);
+    public ResponseEntity<Object> updateConfig(@Valid @RequestBody ConfigurationDTO configurationDTO) {
+        Configuration configuration = configurationService.updateConfig(configurationDTO);
+        return ResponseHandler.responseBuilder(configuration, HttpStatus.OK, null, null);
     }
 
     @GetMapping("/delete/{id}")

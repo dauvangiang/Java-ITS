@@ -22,37 +22,34 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    //Get all customers
     @GetMapping()
-    public List<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    public ResponseEntity<Object> getAllCustomers() {
+        List<Customer> listCustomer = customerService.getAllCustomers();
+        return ResponseHandler.responseBuilder(listCustomer, HttpStatus.OK, null,null);
     }
 
-    //Get customer by id
     @GetMapping("/{id}")
-    //Optional: nullable
-    //@PathVariable: map the path variable to the method's parameter (id)
+    //@PathVariable: ánh xạ biến đường dẫn đến tham số id của phương thức
     public ResponseEntity<Object> getCustomerById(@PathVariable Long id) {
-        //Phan hoi tuy chinh
-        return ResponseHandler.responseBuilder(customerService.getCustomerById(id), HttpStatus.OK, null,null);
+        Customer customer = customerService.getCustomerById(id);
+        return ResponseHandler.responseBuilder(customer , HttpStatus.OK, null,null);
     }
 
-    //Create new customer
     @PostMapping
-    public Customer createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
-        return customerService.createCustomer(customerDTO);
+    public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+        Customer customer = customerService.createCustomer(customerDTO);
+        return ResponseHandler.responseBuilder(customer , HttpStatus.OK, null,null);
     }
 
-    //Delete customer by id
     @GetMapping("/delete/{id}")
     public String deleteCustomer(@PathVariable Long id) {
-        customerService.deleteCustomer(id);
-        return "Deleted successfully!";
+        return customerService.deleteCustomer(id);
     }
 
     //Update customer info
     @PostMapping("/update")
-    public Customer updateCustomer(@RequestBody Customer customer) {
-        return customerService.updateCustomer(customer);
+    public ResponseEntity<Object> updateCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
+        Customer customer = customerService.updateCustomer(customerDTO);
+        return ResponseHandler.responseBuilder(customer , HttpStatus.OK, null,null);
     }
 }
