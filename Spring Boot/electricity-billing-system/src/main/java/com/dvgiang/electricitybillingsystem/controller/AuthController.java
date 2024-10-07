@@ -1,19 +1,16 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Controller
 @RestController
+@RequestMapping("/")
 public class AuthController {
-    @GetMapping("/home")
-    public String home() {
-        return "Hello, HOME PAGE";
-    }
-
-    @GetMapping("/auth/login")
-    public String login() {
-        return "Hello, LOGIN PAGE";
+    @GetMapping
+    public String homePage() {
+        return "This is home page for electricity billing system";
     }
 }
