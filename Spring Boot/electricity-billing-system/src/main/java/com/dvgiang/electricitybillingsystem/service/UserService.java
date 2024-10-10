@@ -20,12 +20,6 @@ public class UserService {
   private final AuthenticationManager authenManager;
   private final JwtService jwtService;
 
-//  @Override
-//  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//    return userRepository.findByUsername(username)
-//        .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
-//  }
-
   public User creatNewUser(RegisterDTO registerDTO) {
     User user = User
         .builder()

@@ -1,9 +1,9 @@
-package com.dvgiang.electricitybillingsystem.dto;
+package com.dvgiang.electricitybillingsystem.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
-public class ConfigurationDTO {
+public class ElectricityPricesRequestDTO {
     @NotEmpty(message = "Configuration's name is required!")
     private String name;
     @NotNull(message = "minUse is required!")

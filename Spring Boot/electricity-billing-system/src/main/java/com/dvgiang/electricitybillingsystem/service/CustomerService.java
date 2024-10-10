@@ -2,21 +2,18 @@ package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.dto.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.model.Configuration;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
-
-    public CustomerService(CustomerRepository customerRepository) {
-        this.customerRepository = customerRepository;
-    }
 
     public List<Customer> getAllCustomers() {
         return customerRepository.findAll();
@@ -33,7 +30,12 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CustomerDTO customerDTO) {
-        Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
+        Customer customer = Customer
+            .builder()
+            .fullName(customerDTO.getName())
+            .phone(customerDTO.getPhone())
+            .address(customerDTO.getAddress())
+            .build();
         return customerRepository.save(customer);
     }
 
@@ -47,7 +49,17 @@ public class CustomerService {
     }
 
     public Customer updateCustomer(CustomerDTO customerDTO) {
-        Customer customer = new Customer(customerDTO.getName(), customerDTO.getPhone(), customerDTO.getAddress());
-        return customerRepository.save(customer);
+        Optional<Customer> customer = customerRepository.findById(customerDTO.getId());
+        if (customer.isEmpty()) {
+            throw new NotFoundException("Customer ID not found!");
+        }
+
+        Customer customerUpdate = customer.get();
+
+        customerUpdate.setFullName(customerDTO.getName());
+        customerUpdate.setPhone(customerDTO.getPhone());
+        customerUpdate.setAddress(customerDTO.getAddress());
+
+        return customerRepository.save(customerUpdate);
     }
 }

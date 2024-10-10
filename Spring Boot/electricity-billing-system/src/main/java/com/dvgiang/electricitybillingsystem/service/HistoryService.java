@@ -43,27 +43,27 @@ public class HistoryService {
         //Số điện đã dùng
         int used = historyDTO.getUsed();
 
-        float totalCost = 0f;
-
-        for (Configuration config : configurations) {
-            if (used <= 0) break;
-
-            //Nếu số điện còn lại không vượt quá giới hạn
-            //Tính tiền => hoàn tất
-            if (config.getMaxUse() == null || used <= config.getMaxUse() - config.getMinUse() + 1) {
-                totalCost += used * config.getPrice();
-                break;
-            }
-            //Nếu không, tiếp tục tính
-            int temp = config.getMaxUse() - config.getMinUse() + 1;
-            totalCost += temp * config.getPrice();
-            used -= temp;
-        }
+//        float totalCost = 0f;
+//
+//        for (Configuration config : configurations) {
+//            if (used <= 0) break;
+//
+//            //Nếu số điện còn lại không vượt quá giới hạn
+//            //Tính tiền => hoàn tất
+//            if (config.getMaxUse() == null || used <= config.getMaxUse() - config.getMinUse() + 1) {
+//                totalCost += used * config.getPrice();
+//                break;
+//            }
+//            //Nếu không, tiếp tục tính
+//            int temp = config.getMaxUse() - config.getMinUse() + 1;
+//            totalCost += temp * config.getPrice();
+//            used -= temp;
+//        }
 
         History history = new History();
-        history.setCustomer(customer.get());
-        history.setBillingPeriod(historyDTO.getBillingPeriod());
-        history.setTotalCost(totalCost);
+//        history.setCustomer(customer.get());
+//        history.setBillingPeriod(historyDTO.getBillingPeriod());
+//        history.setTotalCost(totalCost);
 
         return historyRepository.save(history);
     }

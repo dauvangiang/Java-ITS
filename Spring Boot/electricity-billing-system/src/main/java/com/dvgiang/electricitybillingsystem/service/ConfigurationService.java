@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.ConfigurationDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.model.Configuration;
 import com.dvgiang.electricitybillingsystem.repository.ConfigurationRepository;
@@ -32,13 +32,13 @@ public class ConfigurationService {
         return configuration.get();
     }
 
-    public Configuration createConfig(ConfigurationDTO configurationDTO) {
-        Configuration configuration = new Configuration(configurationDTO.getName(), configurationDTO.getMinUse(), configurationDTO.getMaxUse(), configurationDTO.getPrice());
+    public Configuration createConfig(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
+        Configuration configuration = new Configuration(electricityPricesRequestDTO.getName(), electricityPricesRequestDTO.getMinUse(), electricityPricesRequestDTO.getMaxUse(), electricityPricesRequestDTO.getPrice());
         return configurationRepository.save(configuration);
     }
 
-    public Configuration updateConfig(ConfigurationDTO configurationDTO) {
-        Configuration configuration = new Configuration(configurationDTO.getName(), configurationDTO.getMinUse(), configurationDTO.getMaxUse(), configurationDTO.getPrice());
+    public Configuration updateConfig(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
+        Configuration configuration = new Configuration(electricityPricesRequestDTO.getName(), electricityPricesRequestDTO.getMinUse(), electricityPricesRequestDTO.getMaxUse(), electricityPricesRequestDTO.getPrice());
         return configurationRepository.save(configuration);
     }
 
