@@ -5,10 +5,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -24,5 +21,10 @@ public class AuthController {
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody LoginDTO loginDTO) {
     return ResponseEntity.ok(userService.authentication(loginDTO));
+  }
+
+  @GetMapping("/logout")
+  public String logout() {
+    return "Successfully!";
   }
 }

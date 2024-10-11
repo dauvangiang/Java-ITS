@@ -2,10 +2,10 @@ package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.model.Configuration;
+import com.dvgiang.electricitybillingsystem.model.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.model.ElectricityBill;
-import com.dvgiang.electricitybillingsystem.repository.ConfigurationRepository;
+import com.dvgiang.electricitybillingsystem.repository.ElectricityPricesRepository;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
 import com.dvgiang.electricitybillingsystem.repository.ElectricityBillRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ElectricityBillService {
   private final ElectricityBillRepository billRepository;
   private final CustomerRepository customerRepository;
-  private final ConfigurationRepository configurationRepository;
+  private final ElectricityPricesRepository electricityPricesRepository;
 
   //Ghi so dien
   public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
@@ -30,29 +30,14 @@ public class ElectricityBillService {
       throw new NotFoundException("Customer ID not found!");
     }
 
+    //Sắp xếp tăng dần theo giá
+    Sort sort = Sort.by(Sort.Direction.ASC, "price");
+    List<ElectricityPrices> listElectricityPrices = electricityPricesRepository.findAll(sort);
+
     //Số điện đã dùng
     int used = requestDTO.getCurrentReading() - requestDTO.getPreviousReading();
 
-    //Sắp xếp tăng dần theo giá
-    Sort sort = Sort.by(Sort.Direction.ASC, "price");
-    List<Configuration> configurations = configurationRepository.findAll(sort);
-
-    float totalCost = 0f;
-
-    for (Configuration config : configurations) {
-      if (used <= 0) break;
-
-      //Nếu số điện còn lại không vượt quá giới hạn
-      //Tính tiền => hoàn tất
-      if (config.getMaxUse() == null || used <= config.getMaxUse() - config.getMinUse() + 1) {
-        totalCost += used * config.getPrice();
-        break;
-      }
-      //Nếu không, tiếp tục tính
-      int temp = config.getMaxUse() - config.getMinUse() + 1;
-      totalCost += temp * config.getPrice();
-      used -= temp;
-    }
+    float totalCost = calcTotalCost(used, listElectricityPrices);
 
     ElectricityBill bill = ElectricityBill.builder()
         .customer(customer.get())
@@ -68,11 +53,47 @@ public class ElectricityBillService {
   }
 
   //Tra cuu hoa don bang ma KH
-  public ElectricityBill getBillByCustomerId(Long customerId) {
-    ElectricityBill bill = billRepository.findByCustomerId(customerId);
-    if (bill == null) {
+  public List<ElectricityBill> getAllBillByCustomerId(Long customerId) {
+    List<ElectricityBill> bills = billRepository.findAllByCustomerId(customerId);
+    if (bills.isEmpty()) {
       throw new NotFoundException("Customer ID not found!");
     }
-    return bill;
+    return bills;
+  }
+
+  //Tinh tien dien
+  private float calcTotalCost(int used, List<ElectricityPrices> listPrices) {
+    float totalCost = 0f;
+    int i = 0;
+    while (used > 0 && i < listPrices.size() - 1) {
+      //Khoang su dung dien trong muc gia
+      int capacity = listPrices.get(i).getMaxUse() - listPrices.get(i).getMinUse() + 1;
+      /*
+       * neu so dien con lai <= khoang su dung trong gia dien hien tai
+       * so dien nhan gia tien
+       */
+      if (used <= capacity) {
+        totalCost += used * listPrices.get(i).getPrice();
+        used = 0;
+      }
+      /*
+       * Nguoc lai
+       * tien tien dien theo capacity
+       * cap nhat lai so dien
+       */
+      else {
+        totalCost += capacity * listPrices.get(i).getPrice();
+        used -= capacity;
+      }
+      //Bac gia tiep theo
+      i++;
+    }
+
+    //Tinh tien neu so dien con lai vuot muc bac gia cao nhat
+    if (used > 0) {
+      totalCost += used * listPrices.get(i).getPrice();
+    }
+
+    return totalCost;
   }
 }

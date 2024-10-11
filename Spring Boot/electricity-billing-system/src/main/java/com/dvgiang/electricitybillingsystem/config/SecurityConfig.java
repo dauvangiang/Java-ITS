@@ -22,9 +22,9 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(request -> request
-            .requestMatchers("/auth/**", "/electricity_bills/search/{customerId}").permitAll()
-            .requestMatchers("/configurations/**", "customers/**").hasRole("ADMIN")
-            .requestMatchers("/electricity_bills/write_electri_bill").hasRole("TECHNICIAN")
+            .requestMatchers("/auth/**", "/visitor/**").permitAll()
+            .requestMatchers("/admin/**").hasRole("ADMIN")
+            .requestMatchers("/technician/**").hasRole("TECHNICIAN")
             .anyRequest().authenticated()
         )
         .sessionManagement(sess -> sess

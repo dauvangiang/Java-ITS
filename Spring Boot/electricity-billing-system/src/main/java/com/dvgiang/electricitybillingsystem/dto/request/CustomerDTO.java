@@ -1,4 +1,4 @@
-package com.dvgiang.electricitybillingsystem.dto;
+package com.dvgiang.electricitybillingsystem.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;

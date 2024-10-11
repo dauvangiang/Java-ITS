@@ -1,13 +1,11 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
-import com.dvgiang.electricitybillingsystem.dto.CustomerDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.model.Customer;
 import com.dvgiang.electricitybillingsystem.response.ResponseHandler;
 import com.dvgiang.electricitybillingsystem.service.CustomerService;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("admin/customers")
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -33,7 +31,7 @@ public class CustomerController {
         return ResponseHandler.responseBuilder(customer , HttpStatus.OK, null,null);
     }
 
-    @PostMapping
+    @PostMapping("create")
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerService.createCustomer(customerDTO);
         return ResponseHandler.responseBuilder(customer , HttpStatus.OK, null,null);
