@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.repository;
 
-import com.dvgiang.electricitybillingsystem.model.ElectricityPrices;
+import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

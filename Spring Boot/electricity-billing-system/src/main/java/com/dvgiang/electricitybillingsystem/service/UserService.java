@@ -3,17 +3,14 @@ package com.dvgiang.electricitybillingsystem.service;
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.AuthenticationResponseDTO;
-import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.model.Role;
+import com.dvgiang.electricitybillingsystem.entity.Role;
 import com.dvgiang.electricitybillingsystem.repository.UserRepository;
-import com.dvgiang.electricitybillingsystem.model.User;
+import com.dvgiang.electricitybillingsystem.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

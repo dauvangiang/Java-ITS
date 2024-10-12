@@ -1,7 +1,7 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
-import com.dvgiang.electricitybillingsystem.model.Customer;
+import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.response.ResponseHandler;
 import com.dvgiang.electricitybillingsystem.service.CustomerService;
 import jakarta.validation.Valid;

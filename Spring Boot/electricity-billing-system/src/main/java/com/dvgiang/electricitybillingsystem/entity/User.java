@@ -1,4 +1,4 @@
-package com.dvgiang.electricitybillingsystem.model;
+package com.dvgiang.electricitybillingsystem.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

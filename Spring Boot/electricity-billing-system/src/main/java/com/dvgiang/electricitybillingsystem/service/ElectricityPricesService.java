@@ -2,7 +2,7 @@ package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.model.ElectricityPrices;
+import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.repository.ElectricityPricesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

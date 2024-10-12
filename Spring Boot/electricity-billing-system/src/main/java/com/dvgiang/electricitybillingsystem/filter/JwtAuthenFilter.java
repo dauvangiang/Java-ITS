@@ -23,32 +23,26 @@ import java.io.IOException;
 public class JwtAuthenFilter extends OncePerRequestFilter {
   private final JwtService jwtService;
   public final UserDetailsService userDetailsService;
-//  public final UserService userService;
+
   @Override
   protected void doFilterInternal(
       @NonNull HttpServletRequest request,
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain
   ) throws ServletException, IOException {
-    //Lay token xac thuc tu header cua request
     final String authHeader = request.getHeader("Authorization");
 
-    final String jwtToken;
-    final String username;
-
     /*
-    * Kiem tra kieu cua ma xac thuc (token)
-    * JWT thuong bat dau voi 7 ky tu dau la: "Bearer "
+    * Kiểm tra kiểu của mã xác thực (token)
+    * Mã bắt đầu với 7 ký tự: "Bearer "
     */
     if (authHeader == null || !authHeader.startsWith("Bearer ")) {
       filterChain.doFilter(request, response);
       return;
     }
 
-    //Lay ma token
-    jwtToken = authHeader.substring(7);
-    //Giai ma username tu token
-    username = jwtService.extractUsername(jwtToken);
+    final String jwtToken = authHeader.substring(7);
+    final String username = jwtService.extractUsername(jwtToken);
 
     /*
      * SecurityContextHolder.getContext().getAuthentication(): Lấy ngữ cảnh xác thực
@@ -58,19 +52,18 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
     if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
       UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
       if (jwtService.isValidToken(jwtToken, userDetails)) {
-        //Tao doi tuong dai dien cho thong tin xác thuc, truyen 3 tham so
+        //Đối tượng đại diện cho thông tin xác thực
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-            userDetails, //Thong tin nguoi dung
-            null, //Thong tin xac thuc, truyen null vi xac thuc da hoan tat bang token. Nếu chưa xác thực thì thường là mật khẩu hoặc thông tin xác thực khác
-            userDetails.getAuthorities() //Cac quyen ma nguoi dung co
+            userDetails, //Thông tin người dùng
+            null, //Thong tin xac thuc, null vi da xac thuc bang token
+            userDetails.getAuthorities() //quyền của người dùng
         );
-        //Đưa thêm thông tin request vào chi tiết của mã xác thực
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         //Cập nhật chủ sở hữu bối cảnh bảo mật
         SecurityContextHolder.getContext().setAuthentication(authToken);
       }
     }
-    //Chuyển tiếp đến các bộ lọc khác sau khi hoàn tất
+
     filterChain.doFilter(request, response);
   }
 }

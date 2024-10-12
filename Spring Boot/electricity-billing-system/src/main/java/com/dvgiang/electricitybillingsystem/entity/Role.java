@@ -1,4 +1,4 @@
-package com.dvgiang.electricitybillingsystem.model;
+package com.dvgiang.electricitybillingsystem.entity;
 
 public enum Role {
   ADMIN, // 0
