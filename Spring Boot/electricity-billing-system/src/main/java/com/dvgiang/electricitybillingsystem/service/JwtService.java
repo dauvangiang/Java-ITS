@@ -1,23 +1,25 @@
 package com.dvgiang.electricitybillingsystem.service;
 
+import com.dvgiang.electricitybillingsystem.entity.TokenRevoked;
+import com.dvgiang.electricitybillingsystem.repository.TokenRevokedRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+  private final TokenRevokedRepository tokenRevokedRepository;
+
   private static final String SECRET_KEY = "404E635266556A586e3272357538782F413F4428472B4B6250645367566b5970";
 
   public String extractUsername(String token) {
@@ -54,15 +56,26 @@ public class JwtService {
         .compact();
   }
 
-  public boolean isValidToken(String token, UserDetails userDetails) {
-    final String username = extractUsername(token);
-    return !isExpiredToken(token) && (username.equals(userDetails.getUsername()));
+  public void revokeToken(String authHeader) {
+    String token = authHeader.substring(7);
+    TokenRevoked tokenRevoked = TokenRevoked.builder().token(token).build();
+    //Lưu token vào blacklist
+    tokenRevokedRepository.save(tokenRevoked);
   }
 
-  /*
-  * True, nếu token hết hạn
-  * Ngược lại là False
-  */
+  public boolean isValidToken(String token, UserDetails userDetails) {
+    final String username = extractUsername(token);
+    /*
+    * Nếu còn thời gian sống và người dùng hợp lệ
+    * Kiểm tra mã trong blacklist, nếu tồn tại => mã không hợp lệ và ngược lại
+    */
+    if (!isExpiredToken(token) && (username.equals(userDetails.getUsername()))) {
+      int count = tokenRevokedRepository.countTokenRevokedByToken(token);
+      return count == 0;
+    }
+    return false;
+  }
+
   private boolean isExpiredToken(String token) {
     return extractExpired(token).before(new Date());
   }

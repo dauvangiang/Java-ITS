@@ -2,8 +2,10 @@ package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
+import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.dvgiang.electricitybillingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
   private final UserService userService;
+  private final JwtService jwtService;
 
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO) {
@@ -24,7 +27,8 @@ public class AuthController {
   }
 
   @GetMapping("/logout")
-  public String logout() {
-    return "Successfully!";
+  public ResponseEntity<String> logout(@RequestHeader("Authorization") String authHeader) {
+    jwtService.revokeToken(authHeader);
+    return ResponseEntity.ok("Logout Successfully");
   }
 }
