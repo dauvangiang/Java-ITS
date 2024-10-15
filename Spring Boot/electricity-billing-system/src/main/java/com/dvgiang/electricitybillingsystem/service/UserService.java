@@ -7,11 +7,13 @@ import com.dvgiang.electricitybillingsystem.entity.Role;
 import com.dvgiang.electricitybillingsystem.repository.UserRepository;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -43,6 +45,7 @@ public class UserService {
             loginDTO.getPassword() //thông tin bảo mật
         )
     );
+    log.warn("Co nguoi dung dang co gang truy cap");
     //Lấy thông tin người dùng sau khi xác thực thành công
     User user = userRepository.findUserByUsername(loginDTO.getUsername())
         .orElseThrow();

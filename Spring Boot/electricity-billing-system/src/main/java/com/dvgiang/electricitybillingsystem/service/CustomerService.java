@@ -5,11 +5,13 @@ import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -30,6 +32,7 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CustomerDTO customerDTO) {
+        log.info("Add new customer");
         Customer customer = Customer
             .builder()
             .fullName(customerDTO.getName())
@@ -44,6 +47,7 @@ public class CustomerService {
         if (customer.isEmpty()) {
             return "Customer ID does not exist, so not implement!";
         }
+        log.info("Delete a customer");
         customerRepository.deleteById(id);
         return "Deleted successfully!";
     }

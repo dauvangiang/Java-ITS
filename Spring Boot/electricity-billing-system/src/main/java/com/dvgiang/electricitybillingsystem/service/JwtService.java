@@ -1,6 +1,7 @@
 package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.entity.TokenRevoked;
+import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
 import com.dvgiang.electricitybillingsystem.repository.TokenRevokedRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,13 +9,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 import java.util.function.Function;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
@@ -50,7 +54,7 @@ public class JwtService {
         .builder()
         .setSubject(userDetails.getUsername())
         .setIssuedAt(new Date(currentTimeMillis))
-        .setExpiration(new Date(currentTimeMillis + 6*60*60*1000)) //token ton tai trong 6h
+        .setExpiration(new Date(currentTimeMillis + 3*60*60*1000)) //token ton tai trong 3h
         .setIssuer("electricity_billing_sys")
         .signWith(getSignKey(), SignatureAlgorithm.HS256)
         .compact();
@@ -58,7 +62,11 @@ public class JwtService {
 
   public void revokeToken(String authHeader) {
     String token = authHeader.substring(7);
-    TokenRevoked tokenRevoked = TokenRevoked.builder().token(token).build();
+    TokenRevoked tokenRevoked = TokenRevoked
+        .builder()
+        .token(token)
+        .expiredAt(new Date(System.currentTimeMillis()))
+        .build();
     //Lưu token vào blacklist
     tokenRevokedRepository.save(tokenRevoked);
   }
@@ -70,10 +78,15 @@ public class JwtService {
     * Kiểm tra mã trong blacklist, nếu tồn tại => mã không hợp lệ và ngược lại
     */
     if (!isExpiredToken(token) && (username.equals(userDetails.getUsername()))) {
-      int count = tokenRevokedRepository.countTokenRevokedByToken(token);
-      return count == 0;
+//      int count = tokenRevokedRepository.countTokenRevokedByToken(token);
+      Optional<TokenRevoked> tokenRevoked = tokenRevokedRepository.findOneByToken(token);
+      if (tokenRevoked.isEmpty()) {
+        return true;
+      } else {
+        throw new ForbiddenException("Request denied!");
+      }
     }
-    return false;
+    throw new ForbiddenException("Request denied!");
   }
 
   private boolean isExpiredToken(String token) {

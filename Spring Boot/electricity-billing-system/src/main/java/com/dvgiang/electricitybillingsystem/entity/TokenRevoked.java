@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,7 @@ public class TokenRevoked {
 
   @Column(name = "token")
   private String token;
+
+  @Column(name = "expired_at")
+  private Date expiredAt;
 }

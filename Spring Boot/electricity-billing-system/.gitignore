@@ -38,3 +38,6 @@ out/
 
 ### application-{profile}.properties ###
 **/src/main/resources/**/application-*.properties
+
+### Logging ###
+**/logs/

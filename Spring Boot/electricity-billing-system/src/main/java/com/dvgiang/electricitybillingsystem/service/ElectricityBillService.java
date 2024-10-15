@@ -9,6 +9,7 @@ import com.dvgiang.electricitybillingsystem.repository.ElectricityPricesReposito
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
 import com.dvgiang.electricitybillingsystem.repository.ElectricityBillRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ElectricityBillService {
@@ -49,6 +51,8 @@ public class ElectricityBillService {
         .totalCost(totalCost)
         .build();
 
+    String logStr = String.format("Create new electricity bill for customer (customerId: %d)", requestDTO.getCustomerId());
+    log.info(logStr);
     return billRepository.save(bill);
   }
 
