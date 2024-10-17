@@ -45,7 +45,7 @@ public class CustomerService {
     public String deleteCustomer(Long id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if (customer.isEmpty()) {
-            return "Customer ID does not exist, so not implement!";
+            throw new NotFoundException("Customer not exist!");
         }
         log.info("Delete a customer");
         customerRepository.deleteById(id);

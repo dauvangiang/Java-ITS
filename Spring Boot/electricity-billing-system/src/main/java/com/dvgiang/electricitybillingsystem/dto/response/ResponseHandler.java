@@ -1,4 +1,4 @@
-package com.dvgiang.electricitybillingsystem.response;
+package com.dvgiang.electricitybillingsystem.dto.response;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;

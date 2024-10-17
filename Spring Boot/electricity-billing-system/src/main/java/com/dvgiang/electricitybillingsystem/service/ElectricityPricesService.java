@@ -63,7 +63,7 @@ public class ElectricityPricesService {
     public String deleteElectricityPricesById(Long id) {
         Optional<ElectricityPrices> configuration = electricityPricesRepository.findById(id);
         if (configuration.isEmpty()) {
-            return "Configuration ID does not exist, so not implement!";
+            throw  new NotFoundException("Electricity prices does not exist!");
         }
 
         //logging

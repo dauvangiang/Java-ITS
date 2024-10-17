@@ -5,7 +5,6 @@ import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.dvgiang.electricitybillingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

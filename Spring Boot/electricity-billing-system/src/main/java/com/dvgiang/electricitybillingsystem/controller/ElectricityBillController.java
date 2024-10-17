@@ -1,12 +1,16 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDTO;
-import com.dvgiang.electricitybillingsystem.response.ResponseHandler;
+import com.dvgiang.electricitybillingsystem.dto.response.Response;
+import com.dvgiang.electricitybillingsystem.dto.response.ResponseHandler;
+import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
 import com.dvgiang.electricitybillingsystem.service.ElectricityBillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 //@RequestMapping("/electricity_bills")
@@ -17,12 +21,26 @@ public class ElectricityBillController {
   //Tra cuu hoa don bang ma KH
   @GetMapping("/visitor/electricity_bills/search/{customerId}")
   public ResponseEntity<Object> getAllBillByCustomerId(@PathVariable Long customerId) {
-    return ResponseHandler.responseBuilder(billService.getAllBillByCustomerId(customerId), HttpStatus.OK, null, null);
+    List<ElectricityBill> listBill = billService.getAllBillByCustomerId(customerId);
+    Response response = Response
+            .builder()
+            .data(listBill)
+            .status(HttpStatus.OK)
+            .statusCode(200)
+            .build();
+    return ResponseEntity.ok(response);
   }
 
   //Ghi so dien
   @PostMapping("/technician/electricity_bills/write_electricity_bill")
   public ResponseEntity<Object> writeElectricityBilling(@RequestBody ElectricityBillRequestDTO requestDTO) {
-    return ResponseEntity.ok(billService.writeElectricityBilling(requestDTO));
+    ElectricityBill bill = billService.writeElectricityBilling(requestDTO);
+    Response response = Response
+            .builder()
+            .data(bill)
+            .status(HttpStatus.OK)
+            .statusCode(200)
+            .build();
+    return ResponseEntity.ok(response);
   }
 }
