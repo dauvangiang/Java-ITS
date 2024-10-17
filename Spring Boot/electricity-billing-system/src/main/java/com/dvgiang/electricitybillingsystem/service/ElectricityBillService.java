@@ -57,12 +57,12 @@ public class ElectricityBillService {
   }
 
   //Tra cuu hoa don bang ma KH
-  public List<ElectricityBill> getAllBillByCustomerId(Long customerId) {
-    List<ElectricityBill> bills = billRepository.findAllByCustomerId(customerId);
-    if (bills.isEmpty()) {
-      throw new NotFoundException("Customer ID not found!");
+  public List<ElectricityBill> getAllBillUnpaidByCustomerId(Long id) {
+    Optional<Customer> customer = customerRepository.findById(id);
+    if (customer.isEmpty()) {
+      throw new NotFoundException("Customer does not exist!");
     }
-    return bills;
+    return billRepository.findUnpaidBillsByCustomerId(id);
   }
 
   //Tinh tien dien

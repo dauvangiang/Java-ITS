@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
+
+import java.util.Date;
 
 @Data
 @Builder
@@ -25,4 +28,21 @@ public class Customer {
 
     @Column(nullable = false)
     private String address;
+
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
+
+    @Column(name = "status")
+    private Integer status; //0: hủy dịch vụ, 1: đang sử dụng dịch vụ
+
+    //Đặt giá trị mặc định cho status trước khi lưu db
+    @PrePersist
+    public void prePersist() {
+        if (status == null) {
+            status = 1;
+        }
+    }
 }

@@ -66,4 +66,17 @@ public class CustomExceptionHandler {
 
         return new ResponseEntity<>(forbidden, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(value = ConflictException.class)
+    public ResponseEntity<Object> handleConflictException(ConflictException e) {
+        Map <String, Object> conflict = new HashMap<>();
+        conflict.put("message", e.getMessage());
+        conflict.put("httpStatus", HttpStatus.CONFLICT);
+        conflict.put("httpStatusCode", HttpStatus.CONFLICT.value());
+        conflict.put("details", null);
+
+        log.warn(e.getMessage());
+
+        return new ResponseEntity<>(conflict, HttpStatus.CONFLICT);
+    }
 }
