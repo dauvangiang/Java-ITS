@@ -38,7 +38,6 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CustomerDTO customerDTO) {
-        log.info("Created new customer");
         Customer customer = Customer
             .builder()
             .fullName(customerDTO.getName())
@@ -46,6 +45,9 @@ public class CustomerService {
             .address(customerDTO.getAddress())
             .createdAt(new Date(System.currentTimeMillis()))
             .build();
+
+        log.info("Created new customer");
+
         return customerRepository.save(customer);
     }
 

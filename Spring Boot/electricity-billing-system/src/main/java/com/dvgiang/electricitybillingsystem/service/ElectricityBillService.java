@@ -27,14 +27,12 @@ public class ElectricityBillService {
 
   //Ghi so dien
   public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
-    Optional<Customer> customer = customerRepository.findById(requestDTO.getCustomerId());
+    Optional<Customer> customer = customerRepository.findActiveCustomerById(requestDTO.getCustomerId());
     if (customer.isEmpty()) {
-      throw new NotFoundException("Customer ID not found!");
+      throw new NotFoundException("Customer does not exist!");
     }
 
-    //Sắp xếp tăng dần theo giá
-    Sort sort = Sort.by(Sort.Direction.ASC, "price");
-    List<ElectricityPrices> listElectricityPrices = electricityPricesRepository.findAll(sort);
+    List<ElectricityPrices> listElectricityPrices = electricityPricesRepository.findAllWithStatusOrderByASC();
 
     //Số điện đã dùng
     int used = requestDTO.getCurrentReading() - requestDTO.getPreviousReading();
@@ -58,7 +56,7 @@ public class ElectricityBillService {
 
   //Tra cuu hoa don bang ma KH
   public List<ElectricityBill> getAllBillUnpaidByCustomerId(Long id) {
-    Optional<Customer> customer = customerRepository.findById(id);
+    Optional<Customer> customer = customerRepository.findActiveCustomerById(id);
     if (customer.isEmpty()) {
       throw new NotFoundException("Customer does not exist!");
     }

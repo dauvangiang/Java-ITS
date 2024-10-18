@@ -45,7 +45,7 @@ public class UserService {
             loginDTO.getPassword() //thông tin bảo mật
         )
     );
-    log.warn("Co nguoi dung dang co gang truy cap");
+    log.warn("There are users who have access!");
     //Lấy thông tin người dùng sau khi xác thực thành công
     User user = userRepository.findUserByUsername(loginDTO.getUsername())
         .orElseThrow();

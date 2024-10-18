@@ -49,10 +49,10 @@ public class ElectricityPricesController {
         Response response = Response
                 .builder()
                 .data(electricityPrices)
-                .status(HttpStatus.OK)
-                .statusCode(200)
+                .status(HttpStatus.CREATED)
+                .statusCode(201)
                 .build();
-        return ResponseEntity.ok(response);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PostMapping("/update")

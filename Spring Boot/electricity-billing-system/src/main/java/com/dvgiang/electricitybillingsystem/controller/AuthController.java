@@ -5,6 +5,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.dvgiang.electricitybillingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,8 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO) {
-    return ResponseEntity.ok(userService.creatNewUser(registerDTO));
+//    return ResponseEntity.(userService.creatNewUser(registerDTO));
+    return new ResponseEntity<>(userService.creatNewUser(registerDTO), HttpStatus.CREATED);
   }
 
   @PostMapping("/login")

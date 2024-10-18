@@ -20,7 +20,7 @@ public class CleaningService {
   @Scheduled(cron = "0 0 9 */3 * *")
   public void cleanUpRevokedTokensEvery7Days() {
     log.info("Clean up revoked tokens");
-    Date twelveHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
-    tokenRevokedRepository.deleteAllOlderThan(twelveHoursAgo);
+    Date threeHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
+    tokenRevokedRepository.deleteAllOlderThan(threeHoursAgo);
   }
 }

@@ -27,4 +27,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
             "WHERE c.id = :customerId GROUP BY c.id")
     Optional<CustomerWithUnpaidBillsDTO> findCustomerWithUnpaidBillsById(@Param("customerId") Long customerId);
 
+    @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.status = 1")
+    Optional<Customer> findActiveCustomerById(@Param("id") Long id);
 }

@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class ElectricityPricesService {
         Optional<ElectricityPrices> electricityPrices = electricityPricesRepository.findById(id);
         //Ném ra ngoại lệ NotFoundException nếu không tồn tại electricityPrices
         if (electricityPrices.isEmpty()) {
-            throw new NotFoundException("Electricity prices with id = " + id + " does not exist!");
+            throw new NotFoundException("Electricity prices does not exist!");
         }
 
         return electricityPrices.get();
@@ -38,6 +39,7 @@ public class ElectricityPricesService {
             .minUse(electricityPricesRequestDTO.getMinUse())
             .maxUse(electricityPricesRequestDTO.getMaxUse())
             .price(electricityPricesRequestDTO.getPrice())
+            .createdAt(new Date(System.currentTimeMillis()))
             .build();
 
         log.info("Create new electricity prices");
@@ -47,13 +49,16 @@ public class ElectricityPricesService {
     public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
         Optional<ElectricityPrices> electricityPrices = electricityPricesRepository.findById(electricityPricesRequestDTO.getId());
         if(electricityPrices.isEmpty()) {
-            throw new NotFoundException("Electricity prices not found!");
+            throw new NotFoundException("Electricity prices does not exist!");
         }
 
-        electricityPrices.get().setName(electricityPricesRequestDTO.getName());
-        electricityPrices.get().setMinUse(electricityPricesRequestDTO.getMinUse());
-        electricityPrices.get().setMaxUse(electricityPricesRequestDTO.getMaxUse());
-        electricityPrices.get().setPrice(electricityPricesRequestDTO.getPrice());
+        ElectricityPrices priceUpdate = electricityPrices.get();
+
+        priceUpdate.setName(electricityPricesRequestDTO.getName());
+        priceUpdate.setMinUse(electricityPricesRequestDTO.getMinUse());
+        priceUpdate.setMaxUse(electricityPricesRequestDTO.getMaxUse());
+        priceUpdate.setPrice(electricityPricesRequestDTO.getPrice());
+        priceUpdate.setUpdateAt(new Date(System.currentTimeMillis()));
 
         String logStr = String.format("Update electricity prices (id = %d)", electricityPricesRequestDTO.getId());
         log.info(logStr);
@@ -61,8 +66,8 @@ public class ElectricityPricesService {
     }
 
     public String deleteElectricityPricesById(Long id) {
-        Optional<ElectricityPrices> configuration = electricityPricesRepository.findById(id);
-        if (configuration.isEmpty()) {
+        Optional<ElectricityPrices> price = electricityPricesRepository.findByIdWithStatus(id);
+        if (price.isEmpty()) {
             throw  new NotFoundException("Electricity prices does not exist!");
         }
 
@@ -71,7 +76,7 @@ public class ElectricityPricesService {
         String logStr = String.format("Delete electricity prices (id = %d)", id);
         log.info(logStr);
 
-        electricityPricesRepository.deleteById(id);
+        electricityPricesRepository.deletePricesById(id);
         return "Deleted successfully!";
     }
 }
