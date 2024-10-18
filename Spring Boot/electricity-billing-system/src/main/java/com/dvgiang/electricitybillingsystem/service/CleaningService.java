@@ -16,7 +16,6 @@ public class CleaningService {
   private final TokenRevokedRepository tokenRevokedRepository;
 
   @Async
-//  @Scheduled(fixedDelay = 7*24*60*60*1000)
   @Scheduled(cron = "0 0 9 */3 * *")
   public void cleanUpRevokedTokensEvery7Days() {
     log.info("Clean up revoked tokens");

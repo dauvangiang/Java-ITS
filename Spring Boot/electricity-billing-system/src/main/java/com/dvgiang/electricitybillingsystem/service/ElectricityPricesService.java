@@ -17,20 +17,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ElectricityPricesService {
     private final ElectricityPricesRepository electricityPricesRepository;
-    private final JwtService jwtService;
 
     public List<ElectricityPrices> getAllElectricityPrices() {
         return electricityPricesRepository.findAll();
     }
 
-    public ElectricityPrices getElectricityPriceById(Long id) {
-        Optional<ElectricityPrices> electricityPrices = electricityPricesRepository.findById(id);
-        //Ném ra ngoại lệ NotFoundException nếu không tồn tại electricityPrices
-        if (electricityPrices.isEmpty()) {
-            throw new NotFoundException("Electricity prices does not exist!");
-        }
+    public List<ElectricityPrices> getAllWithStatusOrderByASC() {
+        return electricityPricesRepository.findAllWithStatusOrderByASC();
+    }
 
-        return electricityPrices.get();
+    public ElectricityPrices getElectricityPriceById(Long id) {
+        return electricityPricesRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
     }
 
     public ElectricityPrices createElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
@@ -39,44 +37,36 @@ public class ElectricityPricesService {
             .minUse(electricityPricesRequestDTO.getMinUse())
             .maxUse(electricityPricesRequestDTO.getMaxUse())
             .price(electricityPricesRequestDTO.getPrice())
-            .createdAt(new Date(System.currentTimeMillis()))
+            .createdAt(new Date())
             .build();
 
-        log.info("Create new electricity prices");
+        log.info("Created new electricity prices (name: {})", electricityPricesRequestDTO.getName());
+
         return electricityPricesRepository.save(electricityPrices);
     }
 
     public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
-        Optional<ElectricityPrices> electricityPrices = electricityPricesRepository.findById(electricityPricesRequestDTO.getId());
-        if(electricityPrices.isEmpty()) {
-            throw new NotFoundException("Electricity prices does not exist!");
-        }
+        ElectricityPrices electricityPrices = electricityPricesRepository.findById(electricityPricesRequestDTO.getId())
+                .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
 
-        ElectricityPrices priceUpdate = electricityPrices.get();
+        electricityPrices.updateFromDTO(electricityPricesRequestDTO);
+        electricityPrices.setUpdateAt(new Date());
 
-        priceUpdate.setName(electricityPricesRequestDTO.getName());
-        priceUpdate.setMinUse(electricityPricesRequestDTO.getMinUse());
-        priceUpdate.setMaxUse(electricityPricesRequestDTO.getMaxUse());
-        priceUpdate.setPrice(electricityPricesRequestDTO.getPrice());
-        priceUpdate.setUpdateAt(new Date(System.currentTimeMillis()));
+        log.info("Updated electricity prices (id = {})", electricityPricesRequestDTO.getId());
 
-        String logStr = String.format("Update electricity prices (id = %d)", electricityPricesRequestDTO.getId());
-        log.info(logStr);
-        return electricityPricesRepository.save(electricityPrices.get());
+        return electricityPricesRepository.save(electricityPrices);
     }
 
     public String deleteElectricityPricesById(Long id) {
-        Optional<ElectricityPrices> price = electricityPricesRepository.findByIdWithStatus(id);
-        if (price.isEmpty()) {
-            throw  new NotFoundException("Electricity prices does not exist!");
+        if (electricityPricesRepository.existsById(id)) {
+            electricityPricesRepository.deletePricesById(id);
+
+            //logging
+            log.info("Deleted electricity prices (id = {})", id);
+
+            return "Deleted successfully!";
+        } else {
+            throw new NotFoundException("Electricity prices does not exist!");
         }
-
-        //logging
-//        String username = jwtService.extractUsername();
-        String logStr = String.format("Delete electricity prices (id = %d)", id);
-        log.info(logStr);
-
-        electricityPricesRepository.deletePricesById(id);
-        return "Deleted successfully!";
     }
 }

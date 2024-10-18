@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
-public class Response {
+public class ResponseDTO {
     private Object data;
     private HttpHeaders headers;
     private HttpServletRequest request;
@@ -16,7 +16,14 @@ public class Response {
     private HttpStatus status;
     private int statusCode;
 
-    Response(Object data, HttpHeaders headers, HttpServletRequest request, Object config, HttpStatus status, int statusCode) {
+    ResponseDTO(
+        Object data,
+        HttpHeaders headers,
+        HttpServletRequest request,
+        Object config,
+        HttpStatus status,
+        int statusCode
+    ) {
         this.headers = headers;
         this.data = data;
         this.request = request;

@@ -16,7 +16,7 @@ import java.util.Objects;
 @Slf4j
 //Đánh dấu lớp xử lý các ngoại lệ toàn cục xảy ra trong các controller
 @ControllerAdvice
-public class CustomExceptionHandler {
+public class HttpExceptionHandler {
     //Bắt ngoại lệ NotFoundException
     @ExceptionHandler(value = NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException (NotFoundException e) {
@@ -52,19 +52,6 @@ public class CustomExceptionHandler {
         log.warn("An unauthorized user is trying to log in");
 
         return new ResponseEntity<>(unauthor, HttpStatus.UNAUTHORIZED);
-    }
-
-    @ExceptionHandler(value = ForbiddenException.class)
-    public ResponseEntity<Object> handleForbiddenException(ForbiddenException e) {
-        Map <String, Object> forbidden = new HashMap<>();
-        forbidden.put("message", e.getMessage());
-        forbidden.put("httpStatus", HttpStatus.FORBIDDEN);
-        forbidden.put("httpStatusCode", HttpStatus.FORBIDDEN.value());
-        forbidden.put("details", null);
-
-        log.warn(e.getMessage());
-
-        return new ResponseEntity<>(forbidden, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(value = ConflictException.class)

@@ -1,5 +1,6 @@
 package com.dvgiang.electricitybillingsystem.entity;
 
+import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -47,5 +48,12 @@ public class ElectricityPrices {
         if (status == null) {
             status = 1;
         }
+    }
+
+    public void updateFromDTO(ElectricityPricesRequestDTO dto) {
+        this.setName(dto.getName());
+        this.setMinUse(dto.getMinUse());
+        this.setMaxUse(dto.getMaxUse());
+        this.setPrice(dto.getPrice());
     }
 }

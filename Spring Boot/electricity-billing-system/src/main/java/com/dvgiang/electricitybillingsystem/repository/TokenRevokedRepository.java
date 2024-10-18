@@ -17,6 +17,9 @@ public interface TokenRevokedRepository extends JpaRepository<TokenRevoked, Long
 
   Optional<TokenRevoked> findOneByToken(String token);
 
+  @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM TokenRevoked t WHERE t.token = :token")
+  boolean existsByToken(@Param("token") String token);
+
   @Modifying
   @Transactional
   @Query("DELETE FROM TokenRevoked tr WHERE tr.expiredAt <= :threeHoursAgo")

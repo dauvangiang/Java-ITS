@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -24,8 +23,8 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     //Constructor expression: com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO(...)
     @Query("SELECT new com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO(c.id, COUNT(b)) " +
             "FROM Customer c LEFT JOIN ElectricityBill b ON c.id = b.customer.id AND b.paymentStatus = 0" +
-            "WHERE c.id = :customerId GROUP BY c.id")
-    Optional<CustomerWithUnpaidBillsDTO> findCustomerWithUnpaidBillsById(@Param("customerId") Long customerId);
+            "WHERE c.id = :id AND c.status = 1 GROUP BY c.id")
+    Optional<CustomerWithUnpaidBillsDTO> findCustomerWithUnpaidBillsById(@Param("id") Long id);
 
     @Query("SELECT c FROM Customer c WHERE c.id = :id AND c.status = 1")
     Optional<Customer> findActiveCustomerById(@Param("id") Long id);

@@ -1,9 +1,8 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
-import com.dvgiang.electricitybillingsystem.dto.response.Response;
+import com.dvgiang.electricitybillingsystem.dto.response.ResponseDTO;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
-import com.dvgiang.electricitybillingsystem.dto.response.ResponseHandler;
 import com.dvgiang.electricitybillingsystem.service.ElectricityPricesService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,49 +21,49 @@ public class ElectricityPricesController {
     @GetMapping
     public ResponseEntity<Object> getAllElectricityPrices() {
         List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices();
-        Response response = Response
+        ResponseDTO responseDTO = ResponseDTO
                 .builder()
                 .data(listElectricityPrices)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getElectricityPriceById(@PathVariable Long id) {
         ElectricityPrices electricityPrices = electricityPricesService.getElectricityPriceById(id);
-        Response response = Response
+        ResponseDTO responseDTO = ResponseDTO
                 .builder()
                 .data(electricityPrices)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @PostMapping("/create")
     public ResponseEntity<Object> createElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
         ElectricityPrices electricityPrices = electricityPricesService.createElectricityPrices(electricityPricesRequestDTO);
-        Response response = Response
+        ResponseDTO responseDTO = ResponseDTO
                 .builder()
                 .data(electricityPrices)
                 .status(HttpStatus.CREATED)
                 .statusCode(201)
                 .build();
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
 
     @PostMapping("/update")
     public ResponseEntity<Object> updateElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
         ElectricityPrices electricityPrices = electricityPricesService.updateElectricityPrices(electricityPricesRequestDTO);
-        Response response = Response
+        ResponseDTO responseDTO = ResponseDTO
                 .builder()
                 .data(electricityPrices)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/delete/{id}")
