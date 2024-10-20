@@ -4,10 +4,13 @@ USE electricity_billing_system;
 
 CREATE TABLE customer
 (
-    id        BIGINT AUTO_INCREMENT PRIMARY KEY,
-    full_name VARCHAR(255) NOT NULL,
-    phone     VARCHAR(255) NOT NULL,
-    address   VARCHAR(255) NOT NULL
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    full_name   VARCHAR(255) NOT NULL,
+    phone       VARCHAR(255) NOT NULL,
+    address     VARCHAR(255) NOT NULL,
+    status      INT DEFAULT 1,
+    created_at  TIMESTAMP NOT NULL,
+    updated_at  TIMESTAMP NOT NULL
 );
 
 CREATE TABLE user
@@ -18,17 +21,20 @@ CREATE TABLE user
     full_name VARCHAR(255) NOT NULL,
     phone     VARCHAR(255) NOT NULL,
     email     VARCHAR(255) NOT NULL,
-    address   VARCHAR(255),
-    role      INT
+    address   VARCHAR(255) NOT NULL,
+    role      INT DEFAULT 1
 );
 
-CREATE TABLE ElectricityPrices
+CREATE TABLE electricity_prices
 (
     id      BIGINT AUTO_INCREMENT PRIMARY KEY,
     name    VARCHAR(255) NOT NULL,
     min_use INT          NOT NULL,
     max_use INT          NOT NULL,
-    price   FLOAT        NOT NULL
+    price   FLOAT        NOT NULL,
+    status      INT DEFAULT 1,
+    created_at  TIMESTAMP NOT NULL,
+    updated_at  TIMESTAMP NOT NULL
 );
 
 CREATE TABLE electricity_bill
@@ -46,6 +52,8 @@ CREATE TABLE electricity_bill
     FOREIGN KEY (customer_id) REFERENCES customer(id)
 );
 
+--un: admin
+--pw: admin
 INSERT INTO user(username, password, full_name, phone, email, address, role)
 VALUES ("admin",
         "$2y$10$23hS70KrpGt062voer2R1OnTs0XKOTfwURgSNxfqqx4vUXfme4Tk6",
@@ -55,7 +63,7 @@ VALUES ("admin",
         "HN",
         0);
 
-INSERT INTO ElectricityPrices (name, min_use, max_use, price)
+INSERT INTO electricity_prices (name, min_use, max_use, price)
 VALUES ('Bậc 1', 0, 50, 1806.0),
        ('Bậc 2', 51, 100, 1866.0),
        ('Bậc 3', 101, 200, 2167.0),
@@ -63,3 +71,9 @@ VALUES ('Bậc 1', 0, 50, 1806.0),
        ('Bậc 5', 301, 400, 3050.0),
        ('Bậc 6', 401, 1000000000, 3151.0);
 
+CREATE TABLE token_revoked
+(
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    token   VARCHAR(255) NOT NULL,
+    expired_at INT       NOT NULL
+);

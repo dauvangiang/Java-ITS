@@ -1,7 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.entity.TokenRevoked;
-import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
 import com.dvgiang.electricitybillingsystem.repository.TokenRevokedRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
