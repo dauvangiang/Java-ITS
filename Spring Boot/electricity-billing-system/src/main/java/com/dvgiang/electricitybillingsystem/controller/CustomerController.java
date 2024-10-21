@@ -1,7 +1,7 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
-import com.dvgiang.electricitybillingsystem.dto.response.ResponseDTO;
+import com.dvgiang.electricitybillingsystem.dto.response.SuccessResponseDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.service.CustomerService;
 import jakarta.validation.Valid;
@@ -21,13 +21,13 @@ public class CustomerController {
     @GetMapping()
     public ResponseEntity<Object> getAllCustomers() {
         List<Customer> listCustomer = customerService.getAllCustomers();
-        ResponseDTO responseDTO = ResponseDTO
+        SuccessResponseDTO successResponseDTO = SuccessResponseDTO
                 .builder()
                 .data(listCustomer)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(successResponseDTO);
     }
 
     @GetMapping("/{id}")
@@ -45,26 +45,26 @@ public class CustomerController {
 //                .build();
 
         //Builder lombok
-        ResponseDTO responseDTO = ResponseDTO
+        SuccessResponseDTO successResponseDTO = SuccessResponseDTO
                 .builder()
                 .data(customer)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
 
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(successResponseDTO);
     }
 
     @PostMapping("create")
     public ResponseEntity<Object> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerService.createCustomer(customerDTO);
-        ResponseDTO responseDTO = ResponseDTO
+        SuccessResponseDTO successResponseDTO = SuccessResponseDTO
                 .builder()
                 .data(customer)
                 .status(HttpStatus.CREATED)
                 .statusCode(201)
                 .build();
-        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
+        return new ResponseEntity<>(successResponseDTO, HttpStatus.CREATED);
     }
 
     @GetMapping("/delete/{id}")
@@ -76,12 +76,12 @@ public class CustomerController {
     @PostMapping("/update")
     public ResponseEntity<Object> updateCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
         Customer customer = customerService.updateCustomer(customerDTO);
-        ResponseDTO responseDTO = ResponseDTO
+        SuccessResponseDTO successResponseDTO = SuccessResponseDTO
                 .builder()
                 .data(customer)
                 .status(HttpStatus.OK)
                 .statusCode(200)
                 .build();
-        return ResponseEntity.ok(responseDTO);
+        return ResponseEntity.ok(successResponseDTO);
     }
 }

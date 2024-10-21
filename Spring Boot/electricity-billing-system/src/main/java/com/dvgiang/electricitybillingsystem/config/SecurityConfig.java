@@ -4,6 +4,7 @@ import com.dvgiang.electricitybillingsystem.filter.JwtAuthenFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -26,6 +27,16 @@ public class SecurityConfig {
             .requestMatchers("/admin/**").hasRole("ADMIN")
             .requestMatchers("/technician/**").hasRole("TECHNICIAN")
             .anyRequest().authenticated()
+        )
+        .exceptionHandling(e -> e
+//                .authenticationEntryPoint((request, response, authException) -> {
+//                    response.setStatus(401);
+//                    response.getWriter().write("Please provide token!");
+//                })
+            .accessDeniedHandler((request, response, accessDeniedException) -> {
+                response.setStatus(403);
+                response.getWriter().write("Forbidden!");
+            })
         )
         .sessionManagement(sess -> sess
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

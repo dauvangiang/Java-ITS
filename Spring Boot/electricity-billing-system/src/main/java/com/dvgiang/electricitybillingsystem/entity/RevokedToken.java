@@ -13,8 +13,8 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "token_revoked")
-public class TokenRevoked {
+@Table(name = "revoked_token")
+public class RevokedToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

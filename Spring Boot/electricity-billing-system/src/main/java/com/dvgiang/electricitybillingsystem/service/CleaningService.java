@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.repository.TokenRevokedRepository;
+import com.dvgiang.electricitybillingsystem.repository.RevokedTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -13,13 +13,13 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor //tạo ra constructor cho các thuộc tính final hoặc thuộc tính @NonNull
 public class CleaningService {
-  private final TokenRevokedRepository tokenRevokedRepository;
+  private final RevokedTokenRepository revokedTokenRepository;
 
   @Async
   @Scheduled(cron = "0 0 9 */3 * *")
-  public void cleanUpRevokedTokensEvery7Days() {
+  public void cleanUpRevokedTokens() {
     log.info("Clean up revoked tokens");
     Date threeHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
-    tokenRevokedRepository.deleteAllOlderThan(threeHoursAgo);
+    revokedTokenRepository.deleteAllOlderThan(threeHoursAgo);
   }
 }

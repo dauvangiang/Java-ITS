@@ -1,7 +1,7 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.entity.TokenRevoked;
-import com.dvgiang.electricitybillingsystem.repository.TokenRevokedRepository;
+import com.dvgiang.electricitybillingsystem.entity.RevokedToken;
+import com.dvgiang.electricitybillingsystem.repository.RevokedTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,14 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.Date;
-import java.util.Optional;
 import java.util.function.Function;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtService {
-    private final TokenRevokedRepository tokenRevokedRepository;
+    private final RevokedTokenRepository revokedTokenRepository;
 
     private static final String SECRET_KEY = "404E635266556A586e3272357538782F413F4428472B4B6250645367566b5970";
 
@@ -61,13 +60,13 @@ public class JwtService {
 
     public void revokeToken(String authHeader) {
         String token = authHeader.substring(7);
-        TokenRevoked tokenRevoked = TokenRevoked
+        RevokedToken revokedToken = RevokedToken
                 .builder()
                 .token(token)
-                .expiredAt(new Date(System.currentTimeMillis()))
+                .expiredAt(new Date())
                 .build();
         //Lưu token vào blacklist
-        tokenRevokedRepository.save(tokenRevoked);
+        revokedTokenRepository.save(revokedToken);
     }
 
     public boolean isValidToken(String token, UserDetails userDetails) {
@@ -78,7 +77,7 @@ public class JwtService {
          */
         return !isExpiredToken(token)
                 && username.equals(userDetails.getUsername())
-                && !tokenRevokedRepository.existsByToken(token);
+                && !revokedTokenRepository.existsByToken(token);
     }
 
     private boolean isExpiredToken(String token) {
