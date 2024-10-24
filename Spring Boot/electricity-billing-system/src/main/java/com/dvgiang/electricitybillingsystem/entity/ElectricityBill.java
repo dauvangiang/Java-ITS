@@ -43,5 +43,12 @@ public class ElectricityBill {
 
   //-1: chua den ngay thanh toan, 0: chua thanh toan, 1: da thanh toan
   @Column(name = "payment_status")
-  private Integer paymentStatus = 0;
+  private Integer paymentStatus;
+
+  @PrePersist
+  private void prePersist() {
+    if (paymentStatus == null) {
+      paymentStatus = 0;
+    }
+  }
 }

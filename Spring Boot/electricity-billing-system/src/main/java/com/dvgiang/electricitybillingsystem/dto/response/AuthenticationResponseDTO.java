@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -13,4 +15,5 @@ public class AuthenticationResponseDTO {
   private String method;
   private String type;
   private String token;
+  private Set<String> permissions;
 }

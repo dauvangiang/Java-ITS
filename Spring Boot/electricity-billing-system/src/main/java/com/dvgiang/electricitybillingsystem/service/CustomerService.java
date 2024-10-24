@@ -3,6 +3,7 @@ package com.dvgiang.electricitybillingsystem.service;
 import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.exception.ConflictException;
+import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
@@ -18,8 +19,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final PermissionService permissionService;
 
     public List<Customer> getAllCustomers() {
+//        if (!permissionService.hasPermission("READ_CUSTOMER")) {
+//            throw new ForbiddenException("You do not have permission to view customers!");
+//        }
         return customerRepository.findAll();
     }
 

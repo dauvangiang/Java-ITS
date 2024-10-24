@@ -10,7 +10,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -41,13 +42,20 @@ public class User implements UserDetails {
     @Column(name = "address")
     private String address;
 
-    @Enumerated(EnumType.ORDINAL) //Luu vao db dang so
-    @Column(name = "role")
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        Set<GrantedAuthority> authorities = this.getRole().getPermissions().stream()
+                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+                .collect(Collectors.toSet());
+
+//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.getRole().getName()));
+
+        return authorities;
     }
 
     @Override

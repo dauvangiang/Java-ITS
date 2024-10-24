@@ -7,6 +7,7 @@ import com.dvgiang.electricitybillingsystem.service.ElectricityBillService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class ElectricityBillController {
   }
 
   //Ghi so dien
+  @PreAuthorize("hasAuthority('WRITE_BILL')")
   @PostMapping("/technician/electricity_bills/write_electricity_bill")
   public ResponseEntity<Object> writeElectricityBilling(@RequestBody ElectricityBillRequestDTO requestDTO) {
     ElectricityBill bill = billService.writeElectricityBilling(requestDTO);

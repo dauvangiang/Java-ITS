@@ -3,7 +3,7 @@ package com.dvgiang.electricitybillingsystem.service;
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.AuthenticationResponseDTO;
-import com.dvgiang.electricitybillingsystem.entity.Role;
+import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.repository.UserRepository;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final AuthenticationManager authenManager;
   private final JwtService jwtService;
+  private final RoleService roleService;
 
   public User creatNewUser(RegisterDTO registerDTO) {
     User user = User
@@ -31,7 +35,7 @@ public class UserService {
         .phone(registerDTO.getPhone())
         .fullName(registerDTO.getFullName())
         .address(registerDTO.getAddress())
-        .role(Role.TECHNICIAN)
+        .role(roleService.getRoleByName("TECHNICIAN"))
         .build();
     return userRepository.save(user);
   }
@@ -50,10 +54,15 @@ public class UserService {
     User user = userRepository.findUserByUsername(loginDTO.getUsername())
         .orElseThrow();
     String token = jwtService.generateToken(user);
+
+    Set<String> permissions = user.getRole().getPermissions().stream()
+                    .map(Permission::getName).collect(Collectors.toSet());
+
     return AuthenticationResponseDTO.builder()
         .method("Bearer")
         .type("JWT")
         .token(token)
+        .permissions(permissions)
         .build();
   }
 }

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
 public class ElectricityPricesController {
     private final ElectricityPricesService electricityPricesService;
 
+    @PreAuthorize("hasAuthority('READ_E_PRICES')")
     @GetMapping
     public ResponseEntity<Object> getAllElectricityPrices() {
         List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices();
@@ -30,6 +32,7 @@ public class ElectricityPricesController {
         return ResponseEntity.ok(successResponseDTO);
     }
 
+    @PreAuthorize("hasAuthority('READ_E_PRICES')")
     @GetMapping("/{id}")
     public ResponseEntity<Object> getElectricityPriceById(@PathVariable Long id) {
         ElectricityPrices electricityPrices = electricityPricesService.getElectricityPriceById(id);
@@ -42,6 +45,7 @@ public class ElectricityPricesController {
         return ResponseEntity.ok(successResponseDTO);
     }
 
+    @PreAuthorize("hasAuthority('WRITE_E_PRICES')")
     @PostMapping("/create")
     public ResponseEntity<Object> createElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
         ElectricityPrices electricityPrices = electricityPricesService.createElectricityPrices(electricityPricesRequestDTO);
@@ -54,6 +58,7 @@ public class ElectricityPricesController {
         return new ResponseEntity<>(successResponseDTO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('UPDATE_E_PRICES')")
     @PostMapping("/update")
     public ResponseEntity<Object> updateElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
         ElectricityPrices electricityPrices = electricityPricesService.updateElectricityPrices(electricityPricesRequestDTO);
@@ -66,6 +71,7 @@ public class ElectricityPricesController {
         return ResponseEntity.ok(successResponseDTO);
     }
 
+    @PreAuthorize("hasAuthority('DELETE_E_PRICES')")
     @GetMapping("/delete/{id}")
     public String deleteElectricityPricesById(@PathVariable Long id) {
         return electricityPricesService.deleteElectricityPricesById(id);

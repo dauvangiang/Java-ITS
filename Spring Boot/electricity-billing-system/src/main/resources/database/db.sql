@@ -77,3 +77,36 @@ CREATE TABLE token_revoked
     token   VARCHAR(255) NOT NULL,
     expired_at INT       NOT NULL
 );
+
+CREATE TABLE role (
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name    VARCHAR(255) NOT NULL
+)
+
+INSERT INTO role (name)
+VALUES  ( "ADMIN" ),
+        ("TECHNICIAN");
+
+CREATE TABLE permission (
+    id      BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name    VARCHAR(255) NOT NULL
+)
+
+INSERT INTO permission (name)
+VALUES  ("WRITE_CUSTOMER"),
+        ("READ_CUSTOMERS"),
+        ("DELETE_CUSTOMER"),
+        ("UPDATE_CUSTOMER"),
+        ("WRITE_E_PRICES"),
+        ("READ_E_PRICES"),
+        ("DELETE_E_PRICES"),
+        ("UPDATE_E_PRICES"),
+        ("WRITE_PERMISSION"),
+        ("READ_PERMISSION"),
+        ("DELETE_PERMISSION"),
+        ("UPDATE_PERMISSION"),
+        ("WRITE_BILL"),
+        ("READ_CUSTOMER");
+
+
+
