@@ -1,12 +1,12 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
-import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
-import com.dvgiang.electricitybillingsystem.exception.ConflictException;
-import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
-import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.entity.Customer;
-import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
+//import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
+//import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
+//import com.dvgiang.electricitybillingsystem.exception.ConflictException;
+//import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
+//import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
+//import com.dvgiang.electricitybillingsystem.entity.Customer;
+//import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
