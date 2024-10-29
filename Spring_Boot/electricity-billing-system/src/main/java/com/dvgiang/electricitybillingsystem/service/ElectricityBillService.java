@@ -4,7 +4,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDT
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
-import com.dvgiang.electricitybillingsystem.repository.ElectricityBillRepository;
+import com.dvgiang.electricitybillingsystem.repository.electricitybill.ElectricityBillRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,15 +16,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ElectricityBillService {
-    private final ElectricityBillRepository billRepository;
     private final CustomerService customerService;
     private final ElectricityPricesService electricityPricesService;
+    private final ElectricityBillRepo billRepo;
 
     //Ghi so dien
     public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
-        Customer customer = customerService.getActiveCustomerById(requestDTO.getCustomerId());
+        Customer customer = customerService.getCustomerById(requestDTO.getCustomerId());
 
-        List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllWithStatusOrderByASC();
+        List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices(true, "asc");
 
         //Số điện đã dùng
         int used = requestDTO.getCurrentReading() - requestDTO.getPreviousReading();
@@ -43,13 +43,13 @@ public class ElectricityBillService {
 
         log.info("Create new electricity bill for customer (customerId: {})", requestDTO.getCustomerId());
 
-        return billRepository.save(bill);
+        return billRepo.save(bill);
     }
 
     //Tra cuu hoa don bang ma KH
-    public List<ElectricityBill> getAllBillUnpaidByCustomerId(Long id) {
-        customerService.getActiveCustomerById(id);
-        return billRepository.findUnpaidBillsByCustomerId(id);
+    public List<ElectricityBill> getUnpaidBillsByCustomerId(Long id) {
+        customerService.getCustomerById(id);
+        return billRepo.getUnpaidBillsByCustomerId(id);
     }
 
     //Tinh tien dien

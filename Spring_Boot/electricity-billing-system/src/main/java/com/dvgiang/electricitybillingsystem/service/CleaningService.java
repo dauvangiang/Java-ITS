@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.repository.RevokedTokenRepository;
+import com.dvgiang.electricitybillingsystem.repository.token.RevokedTokenRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;

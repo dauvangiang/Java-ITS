@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.config;
 
-import com.dvgiang.electricitybillingsystem.repository.UserRepository;
+import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AppConfig {
   private final UserRepository userRepository;
-//  private final UserDetailsService userDetailsService;
 
   @Bean
   public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder) {
     DaoAuthenticationProvider authenProvider = new DaoAuthenticationProvider();
-//    authenProvider.setUserDetailsService(userDetailsServices());
     authenProvider.setUserDetailsService(userDetailsService());
     authenProvider.setPasswordEncoder(passwordEncoder);
     return authenProvider;
@@ -30,7 +28,7 @@ public class AppConfig {
 
   @Bean
   public UserDetailsService userDetailsService() {
-    return username -> userRepository.findUserByUsername(username)
+    return username -> userRepository.getUserByUsername(username)
         .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
   }
 

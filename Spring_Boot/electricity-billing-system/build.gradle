@@ -42,11 +42,20 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
     //Lombok
-    implementation 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+//    implementation 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
     //json format for logging
     implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+
+
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+
+
+    annotationProcessor 'jakarta.persistence:jakarta.persistence-api:3.1.0'  // Đảm bảo sử dụng phiên bản Jakarta phù hợp
+    annotationProcessor 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 }
 
 tasks.named('test') {

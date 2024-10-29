@@ -22,7 +22,7 @@ public class ElectricityPricesController {
     @PreAuthorize("hasAuthority('READ_E_PRICES')")
     @GetMapping
     public ResponseEntity<Object> getAllElectricityPrices() {
-        List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices();
+        List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices(false, null);
         SuccessResponseDTO successResponseDTO = SuccessResponseDTO
                 .builder()
                 .data(listElectricityPrices)

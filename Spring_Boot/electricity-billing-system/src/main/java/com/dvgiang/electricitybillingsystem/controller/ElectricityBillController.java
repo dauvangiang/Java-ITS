@@ -21,7 +21,7 @@ public class ElectricityBillController {
   //Tra cuu hoa don bang ma KH
   @GetMapping("/visitor/electricity_bills/search/{id}")
   public ResponseEntity<Object> getAllBillByCustomerId(@PathVariable Long id) {
-    List<ElectricityBill> listBill = billService.getAllBillUnpaidByCustomerId(id);
+    List<ElectricityBill> listBill = billService.getUnpaidBillsByCustomerId(id);
     SuccessResponseDTO successResponseDTO = SuccessResponseDTO
             .builder()
             .data(listBill)

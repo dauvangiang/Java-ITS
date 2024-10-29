@@ -1,12 +1,11 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-//import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
-//import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
-//import com.dvgiang.electricitybillingsystem.exception.ConflictException;
-//import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
-//import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-//import com.dvgiang.electricitybillingsystem.entity.Customer;
-//import com.dvgiang.electricitybillingsystem.repository.CustomerRepository;
+import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
+import com.dvgiang.electricitybillingsystem.entity.Customer;
+import com.dvgiang.electricitybillingsystem.exception.ConflictException;
+import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
+import com.dvgiang.electricitybillingsystem.repository.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,23 +17,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    private final CustomerRepository customerRepository;
     private final PermissionService permissionService;
+    private final CustomerRepository customerRepository;
 
     public List<Customer> getAllCustomers() {
 //        if (!permissionService.hasPermission("READ_CUSTOMER")) {
 //            throw new ForbiddenException("You do not have permission to view customers!");
 //        }
-        return customerRepository.findAll();
+
+        return customerRepository.getCustomers();
     }
 
     public Customer getCustomerById(Long id) {
-        return customerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Customer does not exist!"));
-    }
-
-    public Customer getActiveCustomerById(Long id) {
-        return customerRepository.findActiveCustomerById(id)
+        return customerRepository.getCustomerById(id)
                 .orElseThrow(() -> new NotFoundException("Customer does not exist!"));
     }
 
@@ -44,7 +39,7 @@ public class CustomerService {
             .fullName(customerDTO.getName())
             .phone(customerDTO.getPhone())
             .address(customerDTO.getAddress())
-            .createdAt(new Date(System.currentTimeMillis()))
+            .createdAt(new Date())
             .build();
 
         log.info("Created new customer");
@@ -53,7 +48,7 @@ public class CustomerService {
     }
 
     public String deleteCustomerByID(Long id) {
-        CustomerWithUnpaidBillsDTO customer = customerRepository.findCustomerWithUnpaidBillsById(id)
+        CustomerWithUnpaidBillsDTO customer = customerRepository.getCustomerWithUnpaidBillsById(id)
                 .orElseThrow(() -> new NotFoundException("Customer does not exist!"));
 
         if (customer.getUnpaidBillsCount() > 0) {

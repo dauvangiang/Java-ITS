@@ -3,7 +3,7 @@ package com.dvgiang.electricitybillingsystem.service;
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
-import com.dvgiang.electricitybillingsystem.repository.ElectricityPricesRepository;
+import com.dvgiang.electricitybillingsystem.repository.electricityprices.ElectricityPricesRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,18 +16,14 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ElectricityPricesService {
-    private final ElectricityPricesRepository electricityPricesRepository;
+    private final ElectricityPricesRepo electricityPricesRepo;
 
-    public List<ElectricityPrices> getAllElectricityPrices() {
-        return electricityPricesRepository.findAll();
-    }
-
-    public List<ElectricityPrices> getAllWithStatusOrderByASC() {
-        return electricityPricesRepository.findAllWithStatusOrderByASC();
+    public List<ElectricityPrices> getAllElectricityPrices(boolean isOrderByPrices, String type) {
+        return electricityPricesRepo.getAllElectricityPrices(isOrderByPrices, type);
     }
 
     public ElectricityPrices getElectricityPriceById(Long id) {
-        return electricityPricesRepository.findById(id)
+        return electricityPricesRepo.getElectricityPricesById(id)
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
     }
 
@@ -42,11 +38,11 @@ public class ElectricityPricesService {
 
         log.info("Created new electricity prices (name: {})", electricityPricesRequestDTO.getName());
 
-        return electricityPricesRepository.save(electricityPrices);
+        return electricityPricesRepo.save(electricityPrices);
     }
 
     public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
-        ElectricityPrices electricityPrices = electricityPricesRepository.findById(electricityPricesRequestDTO.getId())
+        ElectricityPrices electricityPrices = electricityPricesRepo.getElectricityPricesById(electricityPricesRequestDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
 
         electricityPrices.updateFromDTO(electricityPricesRequestDTO);
@@ -54,12 +50,12 @@ public class ElectricityPricesService {
 
         log.info("Updated electricity prices (id = {})", electricityPricesRequestDTO.getId());
 
-        return electricityPricesRepository.save(electricityPrices);
+        return electricityPricesRepo.save(electricityPrices);
     }
 
     public String deleteElectricityPricesById(Long id) {
-        if (electricityPricesRepository.existsById(id)) {
-            electricityPricesRepository.deletePricesById(id);
+        if (electricityPricesRepo.existsPriceById(id)) {
+            electricityPricesRepo.deleteElectricityPricesById(id);
 
             //logging
             log.info("Deleted electricity prices (id = {})", id);

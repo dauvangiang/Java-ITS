@@ -1,7 +1,7 @@
 package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.entity.RevokedToken;
-import com.dvgiang.electricitybillingsystem.repository.RevokedTokenRepository;
+import com.dvgiang.electricitybillingsystem.repository.token.RevokedTokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
