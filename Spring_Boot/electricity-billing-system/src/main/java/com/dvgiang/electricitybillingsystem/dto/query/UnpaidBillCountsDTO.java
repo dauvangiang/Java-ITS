@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerWithUnpaidBillsDTO {
+public class UnpaidBillCountsDTO {
     private Long customerId;
     private Long unpaidBillsCount;
 }

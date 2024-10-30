@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
+import com.dvgiang.electricitybillingsystem.dto.query.UnpaidBillCountsDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.exception.ConflictException;
@@ -48,11 +48,11 @@ public class CustomerService {
     }
 
     public String deleteCustomerByID(Long id) {
-        CustomerWithUnpaidBillsDTO customer = customerRepository.getCustomerWithUnpaidBillsById(id)
+        UnpaidBillCountsDTO billCounts = customerRepository.getUnpaidBillCountsByCustomerId(id)
                 .orElseThrow(() -> new NotFoundException("Customer does not exist!"));
 
-        if (customer != null && customer.getUnpaidBillsCount() > 0) {
-            throw new ConflictException("Customer has " + customer.getUnpaidBillsCount() + " unpaid bills!");
+        if (billCounts != null && billCounts.getUnpaidBillsCount() > 0) {
+            throw new ConflictException("Customer has " + billCounts.getUnpaidBillsCount() + " unpaid bills!");
         }
 
         log.info("Deleted a customer");

@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.repository.customer;
 
-import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
+import com.dvgiang.electricitybillingsystem.dto.query.UnpaidBillCountsDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 
 import java.util.List;
@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface CustomerRepositoryCustom {
     Optional<Customer> getCustomerById(Long id);
     List<Customer> getCustomers();
-    Optional<CustomerWithUnpaidBillsDTO> getCustomerWithUnpaidBillsById(Long id);
+    Optional<UnpaidBillCountsDTO> getUnpaidBillCountsByCustomerId(Long id);
     void deleteCustomerById(Long id);
 }

@@ -1,12 +1,11 @@
 package com.dvgiang.electricitybillingsystem.repository.customer;
 
-import com.dvgiang.electricitybillingsystem.dto.query.CustomerWithUnpaidBillsDTO;
+import com.dvgiang.electricitybillingsystem.dto.query.UnpaidBillCountsDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.QCustomer;
 import com.dvgiang.electricitybillingsystem.entity.QElectricityBill;
 import com.dvgiang.electricitybillingsystem.repository.BaseRepository;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -51,7 +50,7 @@ class CustomerRepositoryImpl extends BaseRepository<Customer, Long> implements C
     }
 
     @Override
-    public Optional<CustomerWithUnpaidBillsDTO> getCustomerWithUnpaidBillsById(Long id) {
+    public Optional<UnpaidBillCountsDTO> getUnpaidBillCountsByCustomerId(Long id) {
         QCustomer qCustomer = QCustomer.customer;
         QElectricityBill qBill = QElectricityBill.electricityBill;
 
@@ -63,24 +62,13 @@ class CustomerRepositoryImpl extends BaseRepository<Customer, Long> implements C
             .and(qCustomer.id.eq(id))
             .and(qCustomer.status.eq(1));
 
-        CustomerWithUnpaidBillsDTO billCounts = query
-            .select(Projections.constructor(CustomerWithUnpaidBillsDTO.class, qCustomer.id, qBill.count()))
+        UnpaidBillCountsDTO billCounts = query
+            .select(Projections.constructor(UnpaidBillCountsDTO.class, qCustomer.id, qBill.count()))
             .from(qCustomer)
             .leftJoin(qBill).on(leftJoinBuilder)
             .where(whereBuilder)
             .groupBy(qCustomer.id)
             .fetchOne();
-
-        System.out.println(billCounts);
-
-//        CustomerWithUnpaidBillsDTO customer = query
-//            .from(qCustomer)
-//            .leftJoin(qBill)
-//                .on(leftJoinBuilder)
-//            .select(Projections.fields(CustomerWithUnpaidBillsDTO.class, qCustomer.id, qBill.id.count().as("unpaidBillCount")))
-//            .where(whereBuilder)
-//            .groupBy(qCustomer.id)
-//            .fetchOne();
 
         return Optional.ofNullable(billCounts);
     }
