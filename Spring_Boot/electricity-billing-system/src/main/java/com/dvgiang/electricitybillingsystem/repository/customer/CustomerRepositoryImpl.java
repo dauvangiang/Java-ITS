@@ -6,14 +6,17 @@ import com.dvgiang.electricitybillingsystem.entity.QCustomer;
 import com.dvgiang.electricitybillingsystem.entity.QElectricityBill;
 import com.dvgiang.electricitybillingsystem.repository.BaseRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-//Trien khai các hàm đã khai báo trong CustomerRepositoryCustom
+//Triển khai các hàm đã khai báo trong CustomerRepositoryCustom
 @Repository
 class CustomerRepositoryImpl extends BaseRepository<Customer, Long> implements CustomerRepositoryCustom {
     public CustomerRepositoryImpl(EntityManager entityManager) {
@@ -54,24 +57,37 @@ class CustomerRepositoryImpl extends BaseRepository<Customer, Long> implements C
 
         BooleanBuilder leftJoinBuilder = new BooleanBuilder()
             .and(qCustomer.id.eq(qBill.customer.id))
-            .and(qBill.paymentStatus.eq(0)); //umpaid
+            .and(qBill.paymentStatus.eq(0)); //unpaid
 
         BooleanBuilder whereBuilder = new BooleanBuilder()
             .and(qCustomer.id.eq(id))
             .and(qCustomer.status.eq(1));
 
-        CustomerWithUnpaidBillsDTO customer = query
+        CustomerWithUnpaidBillsDTO billCounts = query
+            .select(Projections.constructor(CustomerWithUnpaidBillsDTO.class, qCustomer.id, qBill.count()))
             .from(qCustomer)
-            .leftJoin(qBill)
-                .on(leftJoinBuilder)
-            .select(Projections.fields(CustomerWithUnpaidBillsDTO.class, qCustomer.id, qBill.id.count().as("unpaidBillCount")))
+            .leftJoin(qBill).on(leftJoinBuilder)
             .where(whereBuilder)
             .groupBy(qCustomer.id)
             .fetchOne();
 
-        return Optional.ofNullable(customer);
+        System.out.println(billCounts);
+
+//        CustomerWithUnpaidBillsDTO customer = query
+//            .from(qCustomer)
+//            .leftJoin(qBill)
+//                .on(leftJoinBuilder)
+//            .select(Projections.fields(CustomerWithUnpaidBillsDTO.class, qCustomer.id, qBill.id.count().as("unpaidBillCount")))
+//            .where(whereBuilder)
+//            .groupBy(qCustomer.id)
+//            .fetchOne();
+
+        return Optional.ofNullable(billCounts);
     }
 
+    @Override
+    @Transactional
+    @Modifying
     public void deleteCustomerById(Long id) {
         QCustomer qCustomer = QCustomer.customer;
 

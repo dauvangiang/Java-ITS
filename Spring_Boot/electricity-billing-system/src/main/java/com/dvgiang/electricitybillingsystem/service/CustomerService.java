@@ -51,7 +51,7 @@ public class CustomerService {
         CustomerWithUnpaidBillsDTO customer = customerRepository.getCustomerWithUnpaidBillsById(id)
                 .orElseThrow(() -> new NotFoundException("Customer does not exist!"));
 
-        if (customer.getUnpaidBillsCount() > 0) {
+        if (customer != null && customer.getUnpaidBillsCount() > 0) {
             throw new ConflictException("Customer has " + customer.getUnpaidBillsCount() + " unpaid bills!");
         }
 
