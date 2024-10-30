@@ -17,9 +17,9 @@ import java.util.Optional;
 
 //Triển khai các hàm đã khai báo trong CustomerRepositoryCustom
 @Repository
-class CustomerRepositoryImpl extends BaseRepository<Customer, Long> implements CustomerRepositoryCustom {
+class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositoryCustom {
     public CustomerRepositoryImpl(EntityManager entityManager) {
-        super(Customer.class, entityManager);
+        super(entityManager);
     }
 
     @Override

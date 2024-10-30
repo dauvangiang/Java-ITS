@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class ElectricityPricesRepoImpl extends BaseRepository<ElectricityPrices, Long> implements ElectricityPricesRepoCustom {
+public class ElectricityPricesRepoImpl extends BaseRepository implements ElectricityPricesRepoCustom {
     public ElectricityPricesRepoImpl(EntityManager entityManager) {
-        super(ElectricityPrices.class, entityManager);
+        super(entityManager);
     }
 
     @Override

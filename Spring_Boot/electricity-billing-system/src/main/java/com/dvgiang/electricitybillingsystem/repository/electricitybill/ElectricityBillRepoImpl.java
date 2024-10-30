@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class ElectricityBillRepoImpl extends BaseRepository<ElectricityBill, Long> implements ElectricityBillRepoCustom {
+public class ElectricityBillRepoImpl extends BaseRepository implements ElectricityBillRepoCustom {
     public ElectricityBillRepoImpl(EntityManager entityManager) {
-        super(ElectricityBill.class, entityManager);
+        super(entityManager);
     }
 
     @Override

@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 
 @Repository
-public class RevokedTokenRepositoryImpl extends BaseRepository<RevokedToken, Long> implements RevokedTokenRepositoryCustom {
+public class RevokedTokenRepositoryImpl extends BaseRepository implements RevokedTokenRepositoryCustom {
     public RevokedTokenRepositoryImpl(EntityManager entityManager) {
-        super(RevokedToken.class, entityManager);
+        super(entityManager);
     }
 
     @Override

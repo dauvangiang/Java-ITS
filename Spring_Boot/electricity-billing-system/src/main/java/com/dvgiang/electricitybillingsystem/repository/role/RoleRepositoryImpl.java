@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public class RoleRepositoryImpl extends BaseRepository<Role, Long> implements RoleRepositoryCustom {
+public class RoleRepositoryImpl extends BaseRepository implements RoleRepositoryCustom {
     public RoleRepositoryImpl(EntityManager entityManager) {
-        super(Role.class, entityManager);
+        super(entityManager);
     }
 
     @Override
