@@ -20,6 +20,12 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PreAuthorize("hasAuthority('READ_CUSTOMERS')")
+    @GetMapping("/page/{page}")
+    public ResponseEntity<Object> getCustomersByPage(@PathVariable int page) {
+        return ResponseEntity.ok(customerService.getCustomersByPage(page, 5));
+    }
+
+    @PreAuthorize("hasAuthority('READ_CUSTOMERS')")
     @GetMapping()
     public ResponseEntity<Object> getAllCustomers() {
         List<Customer> listCustomer = customerService.getAllCustomers();

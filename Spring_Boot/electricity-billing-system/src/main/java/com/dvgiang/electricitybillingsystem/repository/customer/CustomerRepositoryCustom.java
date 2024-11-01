@@ -12,4 +12,5 @@ public interface CustomerRepositoryCustom {
     List<Customer> getCustomers();
     Optional<UnpaidBillCountsDTO> getUnpaidBillCountsByCustomerId(Long id);
     void deleteCustomerById(Long id);
+    List<Customer> getCustomersByPage(int page, long limit);
 }

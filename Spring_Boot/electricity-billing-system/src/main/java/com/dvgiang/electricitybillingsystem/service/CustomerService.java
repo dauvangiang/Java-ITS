@@ -73,4 +73,8 @@ public class CustomerService {
 
         return customerRepository.save(customer);
     }
+
+    public List<Customer> getCustomersByPage(int page, long limit) {
+        return customerRepository.getCustomersByPage(page, limit);
+    }
 }

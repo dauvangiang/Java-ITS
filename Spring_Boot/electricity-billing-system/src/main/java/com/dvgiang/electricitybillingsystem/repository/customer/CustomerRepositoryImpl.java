@@ -7,6 +7,7 @@ import com.dvgiang.electricitybillingsystem.entity.QElectricityBill;
 import com.dvgiang.electricitybillingsystem.repository.BaseRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
@@ -49,6 +50,16 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
                 .fetch();
     }
 
+    public List<Customer> getCustomersByPage(int page, long limit) {
+        QCustomer qCustomer = QCustomer.customer;
+        return query
+            .from(qCustomer)
+            .select(qCustomer)
+            .offset(limit * (page - 1)) //Số bản ghi bị bỏ qua
+            .limit(limit) //Số bản ghi tối đa mỗi lần truy vấn
+            .fetch();
+    }
+
     @Override
     public Optional<UnpaidBillCountsDTO> getUnpaidBillCountsByCustomerId(Long id) {
         QCustomer qCustomer = QCustomer.customer;
@@ -62,12 +73,25 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
             .and(qCustomer.id.eq(id))
             .and(qCustomer.status.eq(1));
 
+//        UnpaidBillCountsDTO billCounts = query
+//            .select(Projections.constructor(UnpaidBillCountsDTO.class, qCustomer.id, qBill.count()))
+//            .from(qCustomer)
+//            .leftJoin(qBill).on(leftJoinBuilder)
+//            .where(whereBuilder)
+//            .groupBy(qCustomer.id)
+//            .fetchOne();
+
+        //Subquery: count unpaid bill by customer id
         UnpaidBillCountsDTO billCounts = query
-            .select(Projections.constructor(UnpaidBillCountsDTO.class, qCustomer.id, qBill.count()))
+            .select(Projections.constructor(
+                UnpaidBillCountsDTO.class,
+                qCustomer.id,
+                JPAExpressions.select(qBill.id.count())
+                    .from(qBill)
+                    .where(qBill.customer.id.eq(id).and(qBill.paymentStatus.eq(0)))
+                ))
             .from(qCustomer)
-            .leftJoin(qBill).on(leftJoinBuilder)
-            .where(whereBuilder)
-            .groupBy(qCustomer.id)
+            .where(qCustomer.id.eq(id))
             .fetchOne();
 
         return Optional.ofNullable(billCounts);
