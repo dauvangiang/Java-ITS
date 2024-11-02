@@ -20,7 +20,6 @@ public class ElectricityBillService {
     private final ElectricityPricesService electricityPricesService;
     private final ElectricityBillRepo billRepo;
 
-    //Ghi so dien
     public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
         Customer customer = customerService.getCustomerById(requestDTO.getCustomerId());
 
@@ -46,13 +45,11 @@ public class ElectricityBillService {
         return billRepo.save(bill);
     }
 
-    //Tra cuu hoa don bang ma KH
     public List<ElectricityBill> getUnpaidBillsByCustomerId(Long id) {
         customerService.getCustomerById(id);
         return billRepo.getUnpaidBillsByCustomerId(id);
     }
 
-    //Tinh tien dien
     private float calcTotalCost(int used, List<ElectricityPrices> listPrices) {
         float totalCost = 0f;
         int i = 0;

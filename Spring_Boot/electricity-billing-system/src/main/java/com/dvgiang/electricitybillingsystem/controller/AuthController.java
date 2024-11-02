@@ -2,6 +2,7 @@ package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
+import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.dvgiang.electricitybillingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +20,16 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<Object> register(@RequestBody RegisterDTO registerDTO) {
 //    return ResponseEntity.(userService.creatNewUser(registerDTO));
-    return new ResponseEntity<>(userService.creatNewUser(registerDTO), HttpStatus.CREATED);
+    return new ResponseEntity<>(
+            BaseResponse.ok(userService.creatNewUser(registerDTO)),
+            HttpStatus.CREATED);
   }
 
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody LoginDTO loginDTO) {
-    return ResponseEntity.ok(userService.authentication(loginDTO));
+    return ResponseEntity.ok(
+            BaseResponse.ok(userService.authentication(loginDTO))
+    );
   }
 
   @GetMapping("/logout")

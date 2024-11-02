@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor //tạo ra constructor cho các thuộc tính final hoặc thuộc tính @NonNull
+@RequiredArgsConstructor
 public class CleaningService {
   private final RevokedTokenRepository revokedTokenRepository;
 

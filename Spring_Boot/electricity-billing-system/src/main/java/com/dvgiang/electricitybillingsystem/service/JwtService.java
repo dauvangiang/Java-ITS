@@ -65,7 +65,6 @@ public class JwtService {
                 .token(token)
                 .expiredAt(new Date())
                 .build();
-        //Lưu token vào blacklist
         revokedTokenRepository.save(revokedToken);
     }
 
@@ -95,10 +94,10 @@ public class JwtService {
 
     private Claims extractAllClaims(String token) {
         return Jwts
-                .parserBuilder() //Tạo đối tượng JwtParserBuilder cho phép phân tích jwt
-                .setSigningKey(getSignKey()) //Đặt khóa bí mật dùng để xác thực jwt
-                .build() //Tạo và trả về đối tượng JwtParser
-                .parseClaimsJws(token) //Phân tích jwt
+                .parserBuilder()
+                .setSigningKey(getSignKey())
+                .build()
+                .parseClaimsJws(token)
                 .getBody();
     }
 

@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.filter;
 
-import com.dvgiang.electricitybillingsystem.dto.response.FailResponseDTO;
+import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,14 +74,9 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.setContentType("application/json");
 
-            FailResponseDTO responseData = new FailResponseDTO(
-                    HttpStatus.UNAUTHORIZED,
-                    "JWT token validation failed!",
-                    e.getMessage(),
-                    e.getCause()
+            String jsonResponse = (new ObjectMapper()).writeValueAsString(
+                    BaseResponse.fail("JWT token validation failed! " + e.getMessage())
             );
-
-            String jsonResponse = (new ObjectMapper()).writeValueAsString(responseData);
 
             response.getWriter().write(jsonResponse);
             return;
@@ -91,14 +85,9 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
             response.setStatus(403);
             response.setContentType("application/json");
 
-            FailResponseDTO responseData = new FailResponseDTO(
-                    HttpStatus.FORBIDDEN,
-                    e.getMessage(),
-                    null,
-                    e.getCause()
+            String jsonResponse = (new ObjectMapper()).writeValueAsString(
+                    BaseResponse.fail(e.getMessage())
             );
-
-            String jsonResponse = (new ObjectMapper()).writeValueAsString(responseData);
 
             response.getWriter().write(jsonResponse);
             return;

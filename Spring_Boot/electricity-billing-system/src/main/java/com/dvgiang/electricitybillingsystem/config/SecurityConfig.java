@@ -1,12 +1,11 @@
 package com.dvgiang.electricitybillingsystem.config;
 
-import com.dvgiang.electricitybillingsystem.dto.response.FailResponseDTO;
+import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.filter.JwtAuthenFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,14 +40,9 @@ public class SecurityConfig {
                 response.setStatus(403);
                 response.setContentType("application/json");
 
-                FailResponseDTO responseData = new FailResponseDTO(
-                        HttpStatus.FORBIDDEN,
-                        "Access is not allowed!",
-                        null,
-                        accessDeniedException.getCause()
+                String jsonResponse = (new ObjectMapper()).writeValueAsString(
+                        BaseResponse.fail("Access is not allowed!")
                 );
-
-                String jsonResponse = (new ObjectMapper()).writeValueAsString(responseData);
                 response.getWriter().write(jsonResponse);
             })
         )

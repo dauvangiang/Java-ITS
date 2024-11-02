@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.util.Date;
 
@@ -39,7 +38,6 @@ public class Customer {
     @Column(name = "status")
     private Integer status; //0: hủy dịch vụ, 1: đang sử dụng dịch vụ
 
-    //Đặt giá trị mặc định cho status trước khi lưu db
     @PrePersist
     public void prePersist() {
         if (status == null) {
