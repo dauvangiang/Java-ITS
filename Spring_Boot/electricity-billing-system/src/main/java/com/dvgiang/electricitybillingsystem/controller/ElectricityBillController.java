@@ -3,6 +3,7 @@ package com.dvgiang.electricitybillingsystem.controller;
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.service.ElectricityBillService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class ElectricityBillController {
 
     @PreAuthorize("hasAuthority('WRITE_BILL')")
     @PostMapping("/technician/electricity_bills/write_electricity_bill")
-    public ResponseEntity<Object> writeElectricityBilling(@RequestBody ElectricityBillRequestDTO requestDTO) {
+    public ResponseEntity<Object> writeElectricityBilling(@Valid @RequestBody ElectricityBillRequestDTO requestDTO) {
         return new ResponseEntity<>(
                 BaseResponse.ok(billService.writeElectricityBilling(requestDTO)),
                 HttpStatus.CREATED

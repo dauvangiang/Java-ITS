@@ -5,6 +5,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.AuthenticationResponseDTO;
 import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.entity.User;
+import com.dvgiang.electricitybillingsystem.mapper.UserMapper;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,19 +24,15 @@ public class UserService {
     private final AuthenticationManager authenManager;
     private final JwtService jwtService;
     private final RoleService roleService;
-    private final UserRepository userRepository; //querydsl
+    private final UserRepository userRepository;
+    private final UserMapper mapper;
 
     public User creatNewUser(RegisterDTO registerDTO) {
-        User user = User
-                .builder()
-                .username(registerDTO.getUsername())
-                .password(passwordEncoder.encode(registerDTO.getPassword()))
-                .email(registerDTO.getEmail())
-                .phone(registerDTO.getPhone())
-                .fullName(registerDTO.getFullName())
-                .address(registerDTO.getAddress())
-                .role(roleService.getRoleByName("TECHNICIAN"))
-                .build();
+        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
+
+        User user = mapper.toUser(registerDTO);
+        user.setRole(roleService.getRoleByName("TECHNICIAN"));
+
         return userRepository.save(user);
     }
 

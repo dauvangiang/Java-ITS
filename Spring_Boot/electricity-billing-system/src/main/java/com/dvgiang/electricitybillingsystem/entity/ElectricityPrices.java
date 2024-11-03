@@ -48,6 +48,9 @@ public class ElectricityPrices {
         if (status == null) {
             status = 1;
         }
+        if (createdAt == null) {
+            createdAt = new Date();
+        }
     }
 
     public void updateFromDTO(ElectricityPricesRequestDTO dto) {

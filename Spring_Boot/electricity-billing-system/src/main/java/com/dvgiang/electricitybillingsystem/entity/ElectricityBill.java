@@ -15,40 +15,43 @@ import java.util.Date;
 @Entity
 @Table(name = "electricity_bill")
 public class ElectricityBill {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "customer_id")
-  private Customer customer;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
-  @Column(name = "writing_date")
-  private Date writingDate;
+    @Column(name = "writing_date")
+    private Date writingDate;
 
-  @Column(name = "billing_period")
-  private String billingPeriod;
+    @Column(name = "billing_period")
+    private String billingPeriod;
 
-  @Column(name = "previous_reading")
-  private Integer previousReading;
+    @Column(name = "previous_reading")
+    private Integer previousReading;
 
-  @Column(name = "current_reading")
-  private Integer currentReading;
+    @Column(name = "current_reading")
+    private Integer currentReading;
 
-  @Column(name = "used")
-  private Integer used;
+    @Column(name = "used")
+    private Integer used;
 
-  @Column(name = "total_cost", scale = 3)
-  private Float totalCost;
+    @Column(name = "total_cost", scale = 3)
+    private Float totalCost;
 
-  //-1: chua den ngay thanh toan, 0: chua thanh toan, 1: da thanh toan
-  @Column(name = "payment_status")
-  private Integer paymentStatus;
+    //0: chua thanh toan, 1: da thanh toan
+    @Column(name = "payment_status")
+    private Integer paymentStatus;
 
-  @PrePersist
-  private void prePersist() {
-    if (paymentStatus == null) {
-      paymentStatus = 0;
+    @PrePersist
+    private void prePersist() {
+        if (paymentStatus == null) {
+            paymentStatus = 0;
+        }
+        if (writingDate == null) {
+            writingDate = new Date();
+        }
     }
-  }
 }

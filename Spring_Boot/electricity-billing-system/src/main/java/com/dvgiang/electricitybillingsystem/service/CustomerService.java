@@ -5,6 +5,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.exception.ConflictException;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
+import com.dvgiang.electricitybillingsystem.mapper.CustomerMapper;
 import com.dvgiang.electricitybillingsystem.repository.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.List;
 public class CustomerService {
     private final PermissionService permissionService;
     private final CustomerRepository customerRepository;
+    private final CustomerMapper mapper;
 
     public List<Customer> getAllCustomers() {
 //        if (!permissionService.hasPermission("READ_CUSTOMER")) {
@@ -34,13 +36,8 @@ public class CustomerService {
     }
 
     public Customer createCustomer(CustomerDTO customerDTO) {
-        Customer customer = Customer
-            .builder()
-            .fullName(customerDTO.getName())
-            .phone(customerDTO.getPhone())
-            .address(customerDTO.getAddress())
-            .createdAt(new Date())
-            .build();
+        Customer customer = mapper.toCustomer(customerDTO);
+        customer.setCreatedAt(new Date());
 
         log.info("Created new customer");
 
@@ -57,7 +54,6 @@ public class CustomerService {
 
         log.info("Deleted a customer");
 
-        //Cập nhật trạng thái KH thành 0 (ngừng sử dụng dịch vụ)
         customerRepository.deleteCustomerById(id);
         return "Deleted successfully!";
     }
@@ -66,7 +62,7 @@ public class CustomerService {
         Customer customer = customerRepository.findById(customerDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Customer ID does not exist!"));
 
-        customer.updateFromDTO(customerDTO);
+        mapper.updateCustomer(customer, customerDTO);
         customer.setUpdatedAt(new Date());
 
         log.info("Updated a customer");

@@ -3,6 +3,7 @@ package com.dvgiang.electricitybillingsystem.service;
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
+import com.dvgiang.electricitybillingsystem.mapper.ElectricityPricesMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricityprices.ElectricityPricesRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ElectricityPricesService {
     private final ElectricityPricesRepo electricityPricesRepo;
+    private final ElectricityPricesMapper mapper;
 
     public List<ElectricityPrices> getAllElectricityPrices(boolean isOrderByPrices, String type) {
         return electricityPricesRepo.getAllElectricityPrices(isOrderByPrices, type);
@@ -26,37 +28,30 @@ public class ElectricityPricesService {
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
     }
 
-    public ElectricityPrices createElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
-        ElectricityPrices electricityPrices = ElectricityPrices.builder()
-            .name(electricityPricesRequestDTO.getName())
-            .minUse(electricityPricesRequestDTO.getMinUse())
-            .maxUse(electricityPricesRequestDTO.getMaxUse())
-            .price(electricityPricesRequestDTO.getPrice())
-            .createdAt(new Date())
-            .build();
+    public ElectricityPrices createElectricityPrices(ElectricityPricesRequestDTO priceDTO) {
+        ElectricityPrices price = mapper.toPrice(priceDTO);
 
-        log.info("Created new electricity prices (name: {})", electricityPricesRequestDTO.getName());
+        log.info("Created new electricity prices (name: {})", price.getName());
 
-        return electricityPricesRepo.save(electricityPrices);
+        return electricityPricesRepo.save(price);
     }
 
-    public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO electricityPricesRequestDTO) {
-        ElectricityPrices electricityPrices = electricityPricesRepo.getElectricityPricesById(electricityPricesRequestDTO.getId())
+    public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO priceDTO) {
+        ElectricityPrices price = electricityPricesRepo.getElectricityPricesById(priceDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
 
-        electricityPrices.updateFromDTO(electricityPricesRequestDTO);
-        electricityPrices.setUpdateAt(new Date());
+        mapper.updatePrice(price, priceDTO);
+        price.setUpdateAt(new Date());
 
-        log.info("Updated electricity prices (id = {})", electricityPricesRequestDTO.getId());
+        log.info("Updated electricity prices (id = {})", priceDTO.getId());
 
-        return electricityPricesRepo.save(electricityPrices);
+        return electricityPricesRepo.save(price);
     }
 
     public String deleteElectricityPricesById(Long id) {
         if (electricityPricesRepo.existsPriceById(id)) {
             electricityPricesRepo.deleteElectricityPricesById(id);
 
-            //logging
             log.info("Deleted electricity prices (id = {})", id);
 
             return "Deleted successfully!";

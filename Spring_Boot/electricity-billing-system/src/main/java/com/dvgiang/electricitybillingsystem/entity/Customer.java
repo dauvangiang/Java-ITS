@@ -1,16 +1,13 @@
 package com.dvgiang.electricitybillingsystem.entity;
 
-import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -43,11 +40,5 @@ public class Customer {
         if (status == null) {
             status = 1;
         }
-    }
-
-    public void updateFromDTO(CustomerDTO dto) {
-        this.fullName = dto.getName();
-        this.phone = dto.getPhone();
-        this.address = dto.getAddress();
     }
 }

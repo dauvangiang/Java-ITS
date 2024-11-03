@@ -1,5 +1,7 @@
 package com.dvgiang.electricitybillingsystem.dto.request;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,8 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ElectricityBillRequestDTO {
-  private Long customerId;
-  private String billingPeriod;
-  private Integer previousReading;
-  private Integer currentReading;
+    @NotNull(message = "Customer ID is required")
+    private Long customerId;
+    @NotEmpty(message = "Billing period is required")
+    private String billingPeriod;
+    @NotNull(message = "Customer ID is required")
+    private Integer previousReading;
+    @NotNull(message = "Customer ID is required")
+    private Integer currentReading;
 }

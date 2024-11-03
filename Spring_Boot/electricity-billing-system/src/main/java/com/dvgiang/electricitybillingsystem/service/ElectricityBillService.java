@@ -4,12 +4,12 @@ import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDT
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
+import com.dvgiang.electricitybillingsystem.mapper.ElectricityBillMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricitybill.ElectricityBillRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +19,7 @@ public class ElectricityBillService {
     private final CustomerService customerService;
     private final ElectricityPricesService electricityPricesService;
     private final ElectricityBillRepo billRepo;
+    private final ElectricityBillMapper mapper;
 
     public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
         Customer customer = customerService.getCustomerById(requestDTO.getCustomerId());
@@ -30,15 +31,10 @@ public class ElectricityBillService {
 
         float totalCost = calcTotalCost(used, listElectricityPrices);
 
-        ElectricityBill bill = ElectricityBill.builder()
-                .customer(customer)
-                .writingDate(new Date())
-                .billingPeriod(requestDTO.getBillingPeriod())
-                .currentReading(requestDTO.getCurrentReading())
-                .previousReading(requestDTO.getPreviousReading())
-                .used(used)
-                .totalCost(totalCost)
-                .build();
+        ElectricityBill bill = mapper.toBill(requestDTO);
+//        bill.setUsed(used);
+        bill.setCustomer(customer);
+        bill.setTotalCost(totalCost);
 
         log.info("Create new electricity bill for customer (customerId: {})", requestDTO.getCustomerId());
 
@@ -54,30 +50,26 @@ public class ElectricityBillService {
         float totalCost = 0f;
         int i = 0;
         while (used > 0 && i < listPrices.size() - 1) {
-            //Khoang su dung dien trong muc gia
+            //Khoảng dử dụng điện trong mức giá
             int capacity = listPrices.get(i).getMaxUse() - listPrices.get(i).getMinUse() + 1;
             /*
-             * neu so dien con lai <= khoang su dung trong gia dien hien tai
-             * so dien nhan gia tien
+             * Số điện còn lại <= capacity
+             * Tiền điện (totalCost) += số điện x giá
              */
             if (used <= capacity) {
                 totalCost += used * listPrices.get(i).getPrice();
                 used = 0;
             }
-            /*
-             * Nguoc lai
-             * tien tien dien theo capacity
-             * cap nhat lai so dien
-             */
+            //Ngược lại, totalCost += capacity x giá
             else {
                 totalCost += capacity * listPrices.get(i).getPrice();
                 used -= capacity;
             }
-            //Bac gia tiep theo
+
             i++;
         }
 
-        //Tinh tien neu so dien con lai vuot muc bac gia cao nhat
+        //Trường hợp số điện còn lại vượt mức giá cao nhất
         if (used > 0) {
             totalCost += used * listPrices.get(i).getPrice();
         }
