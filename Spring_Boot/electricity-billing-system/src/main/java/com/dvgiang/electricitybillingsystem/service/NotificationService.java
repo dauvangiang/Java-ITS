@@ -21,7 +21,6 @@ public class NotificationService {
   public void sendElectricityBillPaymentNotice() {
     List<Customer> customers = customerRepository.getCustomers();
     for (Customer c : customers) {
-      //Giả sử: quá trình gửi thông báo qua sms
       System.out.printf(
           "Đã gửi thông báo đóng tiền điện đến khách hàng %s, SĐT: %s\n",
           c.getFullName(),

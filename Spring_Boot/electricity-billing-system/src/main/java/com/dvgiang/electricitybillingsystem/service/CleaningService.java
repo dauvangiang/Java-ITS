@@ -13,13 +13,13 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class CleaningService {
-  private final RevokedTokenRepository revokedTokenRepository;
+    private final RevokedTokenRepository revokedTokenRepository;
 
-  @Async
-  @Scheduled(cron = "0 0 9 */3 * *")
-  public void cleanUpRevokedTokens() {
-    log.info("Clean up revoked tokens");
-    Date threeHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
-    revokedTokenRepository.deleteAllOlderThan(threeHoursAgo);
-  }
+    @Async
+    @Scheduled(cron = "0 0 9 */3 * *")
+    public void cleanUpRevokedTokens() {
+        log.info("Clean up revoked tokens");
+        Date threeHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
+        revokedTokenRepository.deleteAllOlderThan(threeHoursAgo);
+    }
 }
