@@ -13,4 +13,7 @@ public class Permission {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "title")
+    private String title;
 }

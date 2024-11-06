@@ -12,8 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AuthenticationResponseDTO {
-  private String method;
-  private String type;
-  private String token;
-  private Set<String> permissions;
+    private String method;
+    private String type;
+    private String token;
 }

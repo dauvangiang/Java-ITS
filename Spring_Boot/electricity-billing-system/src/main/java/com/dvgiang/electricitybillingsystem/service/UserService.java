@@ -11,8 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,6 +30,7 @@ public class UserService {
     private final RoleService roleService;
     private final UserRepository userRepository;
     private final UserMapper mapper;
+    private final PermissionService permissionService;
 
     public User creatNewUser(RegisterDTO registerDTO) {
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
@@ -49,16 +54,22 @@ public class UserService {
         //Lấy thông tin người dùng sau khi xác thực thành công
         User user = userRepository.getUserByUsername(loginDTO.getUsername())
                 .orElseThrow();
-        String token = jwtService.generateToken(user);
-
-        Set<String> permissions = user.getRole().getPermissions().stream()
-                .map(Permission::getName).collect(Collectors.toSet());
+        String token = jwtService.generateToken(user.getUsername());
 
         return AuthenticationResponseDTO.builder()
                 .method("Bearer")
                 .type("JWT")
                 .token(token)
-                .permissions(permissions)
                 .build();
+    }
+
+    public List<Permission> getPermissions() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
+            String username = authentication.getName();
+            Long roleID = userRepository.getRoleIDByUsername(username);
+            return permissionService.getPermissionsByRoleID(roleID);
+        }
+        return null;
     }
 }

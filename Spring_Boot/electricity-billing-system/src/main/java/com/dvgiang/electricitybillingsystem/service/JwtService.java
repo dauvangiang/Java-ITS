@@ -28,6 +28,10 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
+    public Long extractUserID(String token) {
+        return Long.valueOf(extractClaim(token, Claims::getSubject));
+    }
+
 //  public String generateToken(UserDetails userDetails) {
 //    return generateToken(new HashMap<>(), userDetails);
 //  }
@@ -46,13 +50,12 @@ public class JwtService {
 //        .compact();
 //  }
 
-    public String generateToken(UserDetails userDetails) {
-        long currentTimeMillis = System.currentTimeMillis();
+    public String generateToken(String username) {
         return Jwts
                 .builder()
-                .setSubject(userDetails.getUsername())
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(new Date(currentTimeMillis + 3*60*60*1000)) //token ton tai trong 3h
+                .setSubject(username)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 3*60*60*1000)) //3h
                 .setIssuer("electricity_billing_sys")
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();

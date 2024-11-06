@@ -4,7 +4,7 @@ import com.dvgiang.electricitybillingsystem.entity.User;
 
 import java.util.Optional;
 
-//Khai bao cac ham
 public interface UserRepositoryCustom {
     Optional<User> getUserByUsername(String username);
+    Long getRoleIDByUsername(String username);
 }

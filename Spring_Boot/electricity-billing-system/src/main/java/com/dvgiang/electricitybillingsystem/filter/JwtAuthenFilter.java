@@ -47,19 +47,18 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
         final String jwtToken = authHeader.substring(7);
         try {
             final String username = jwtService.extractUsername(jwtToken);
-
             /*
              * SecurityContextHolder.getContext().getAuthentication(): Lấy ngữ cảnh xác thực
              * Nếu là null, username chưa được xác thực
-             * Tiến hành xác thực
              */
+            System.out.println(SecurityContextHolder.getContext().getAuthentication());
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtService.isValidToken(jwtToken, userDetails)) {
                     //Đối tượng đại diện cho thông tin xác thực
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                             userDetails, //Thông tin người dùng
-                            null, //Thong tin xac thuc, null vi da xac thuc bang token
+                            null, //Thông tin xác thực
                             userDetails.getAuthorities() //quyền của người dùng
                     );
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -93,6 +92,7 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
             return;
         }
 
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
 }

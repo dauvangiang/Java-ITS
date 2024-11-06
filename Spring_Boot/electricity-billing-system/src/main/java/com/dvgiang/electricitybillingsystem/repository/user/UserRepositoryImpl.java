@@ -24,4 +24,13 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
                         .fetchOne()
         );
     }
+
+    @Override
+    public Long getRoleIDByUsername(String username) {
+        QUser qUser = QUser.user;
+        return query.select(qUser.role.id)
+                .from(qUser)
+                .where(qUser.username.eq(username))
+                .fetchOne();
+    }
 }
