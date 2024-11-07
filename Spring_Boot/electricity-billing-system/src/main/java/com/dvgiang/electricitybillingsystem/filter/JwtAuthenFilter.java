@@ -25,7 +25,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
-    public final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -51,7 +51,6 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
              * SecurityContextHolder.getContext().getAuthentication(): Lấy ngữ cảnh xác thực
              * Nếu là null, username chưa được xác thực
              */
-            System.out.println(SecurityContextHolder.getContext().getAuthentication());
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
                 if (jwtService.isValidToken(jwtToken, userDetails)) {
@@ -91,8 +90,6 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
             response.getWriter().write(jsonResponse);
             return;
         }
-
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(request, response);
     }
 }

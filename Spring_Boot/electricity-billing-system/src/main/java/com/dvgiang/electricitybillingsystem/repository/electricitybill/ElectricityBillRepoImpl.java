@@ -20,7 +20,7 @@ public class ElectricityBillRepoImpl extends BaseRepository implements Electrici
         QElectricityBill qBill = QElectricityBill.electricityBill;
 
         BooleanBuilder builder = new BooleanBuilder()
-                .and(qBill.customer.id.eq(id))
+                .and(qBill.customerId.eq(id))
                 .and(qBill.paymentStatus.eq(0));
 
         return query.from(qBill)

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -32,8 +33,8 @@ public class ElectricityBillService {
         float totalCost = calcTotalCost(used, listElectricityPrices);
 
         ElectricityBill bill = mapper.toBill(requestDTO);
-//        bill.setUsed(used);
-        bill.setCustomer(customer);
+        bill.setCreatedAt(new Date());
+        bill.setCustomerId(customer.getId());
         bill.setTotalCost(totalCost);
 
         log.info("Create new electricity bill for customer (customerId: {})", requestDTO.getCustomerId());

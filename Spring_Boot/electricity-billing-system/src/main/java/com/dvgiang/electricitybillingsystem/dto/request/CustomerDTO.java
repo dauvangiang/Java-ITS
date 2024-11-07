@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,4 +23,8 @@ public class CustomerDTO {
 
     @NotEmpty(message = "address is required")
     private String address;
+
+    private Integer status = 1;
+
+    private Date updatedAt = new Date();
 }

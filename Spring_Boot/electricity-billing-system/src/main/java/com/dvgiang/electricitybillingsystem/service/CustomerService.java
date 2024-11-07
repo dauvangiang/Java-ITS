@@ -63,7 +63,6 @@ public class CustomerService {
                 .orElseThrow(() -> new NotFoundException("Customer ID does not exist!"));
 
         mapper.updateCustomer(customer, customerDTO);
-        customer.setUpdatedAt(new Date());
 
         log.info("Updated a customer");
 

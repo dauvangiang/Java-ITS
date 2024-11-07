@@ -30,6 +30,7 @@ public class ElectricityPricesService {
 
     public ElectricityPrices createElectricityPrices(ElectricityPricesRequestDTO priceDTO) {
         ElectricityPrices price = mapper.toPrice(priceDTO);
+        price.setCreatedAt(new Date());
 
         log.info("Created new electricity prices (name: {})", price.getName());
 
@@ -41,7 +42,6 @@ public class ElectricityPricesService {
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
 
         mapper.updatePrice(price, priceDTO);
-        price.setUpdateAt(new Date());
 
         log.info("Updated electricity prices (id = {})", priceDTO.getId());
 

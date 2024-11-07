@@ -17,8 +17,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -36,7 +34,7 @@ public class UserService {
         registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
 
         User user = mapper.toUser(registerDTO);
-        user.setRole(roleService.getRoleByName("TECHNICIAN"));
+        user.setRoleId(roleService.getRoleIDByName("TECHNICIAN"));
 
         return userRepository.save(user);
     }

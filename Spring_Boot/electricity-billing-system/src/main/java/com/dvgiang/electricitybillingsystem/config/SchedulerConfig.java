@@ -20,15 +20,15 @@ public class SchedulerConfig {
         return TriggerBuilder.newTrigger()
                 .withIdentity("elecBillNotificationTrigger", "notification")
                 .forJob(jobDetail)
-                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                                .withIntervalInSeconds(10)
-                                .repeatForever()
+//                .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+//                                .withIntervalInSeconds(10)
+//                                .repeatForever()
 //                                .withRepeatCount(1)
-                )
-//                .withSchedule(
-//                        CronScheduleBuilder.cronSchedule("0 0 8 1 * ?")
-//                                .withMisfireHandlingInstructionFireAndProceed()
 //                )
+                .withSchedule(
+                        CronScheduleBuilder.cronSchedule("0 0 8 1 * ?")
+                                .withMisfireHandlingInstructionFireAndProceed()
+                )
                 .build();
     }
 }

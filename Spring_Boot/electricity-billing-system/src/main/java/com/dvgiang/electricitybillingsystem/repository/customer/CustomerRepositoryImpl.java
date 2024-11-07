@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-//Triển khai các hàm đã khai báo trong CustomerRepositoryCustom
 @Repository
 class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositoryCustom {
     public CustomerRepositoryImpl(EntityManager entityManager) {
@@ -66,7 +65,8 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
         QElectricityBill qBill = QElectricityBill.electricityBill;
 
         BooleanBuilder leftJoinBuilder = new BooleanBuilder()
-            .and(qCustomer.id.eq(qBill.customer.id))
+                .and(qCustomer.id.eq(qBill.customerId))
+
             .and(qBill.paymentStatus.eq(0)); //unpaid
 
         BooleanBuilder whereBuilder = new BooleanBuilder()
@@ -88,7 +88,7 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
                 qCustomer.id,
                 JPAExpressions.select(qBill.id.count())
                     .from(qBill)
-                    .where(qBill.customer.id.eq(id).and(qBill.paymentStatus.eq(0)))
+                    .where(qBill.customerId.eq(id).and(qBill.paymentStatus.eq(0)))
                 ))
             .from(qCustomer)
             .where(qCustomer.id.eq(id))

@@ -15,13 +15,13 @@ import java.util.Date;
 @Entity
 @Table(name = "revoked_token")
 public class RevokedToken {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "token")
-  private String token;
+    @Column(name = "token")
+    private String token;
 
-  @Column(name = "expired_at")
-  private Date expiredAt;
+    @Column(name = "expired_at")
+    private Date expiredAt;
 }

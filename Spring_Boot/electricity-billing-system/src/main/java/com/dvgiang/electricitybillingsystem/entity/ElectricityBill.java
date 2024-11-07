@@ -19,9 +19,9 @@ public class ElectricityBill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    private Customer customer;
+    @Column(name = "customer_id")
+//    private Customer customer;
+    private Long customerId;
 
     @Column(name = "writing_date")
     private Date writingDate;
@@ -38,20 +38,15 @@ public class ElectricityBill {
     @Column(name = "used")
     private Integer used;
 
-    @Column(name = "total_cost", scale = 3)
+    @Column(name = "total_cost")
     private Float totalCost;
 
-    //0: chua thanh toan, 1: da thanh toan
     @Column(name = "payment_status")
-    private Integer paymentStatus;
+    private Integer paymentStatus; //0: chua thanh toan, 1: da thanh toan
 
-    @PrePersist
-    private void prePersist() {
-        if (paymentStatus == null) {
-            paymentStatus = 0;
-        }
-        if (writingDate == null) {
-            writingDate = new Date();
-        }
-    }
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }

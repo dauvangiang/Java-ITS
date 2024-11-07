@@ -7,17 +7,17 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "permission")
-public class Permission {
+@Table(name = "role_permission")
+public class RolePermission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "role_id")
+    private Long roleId;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "permission_id")
+    private Long permissionId;
 
     @Column(name = "created_at")
     private Date createdAt;

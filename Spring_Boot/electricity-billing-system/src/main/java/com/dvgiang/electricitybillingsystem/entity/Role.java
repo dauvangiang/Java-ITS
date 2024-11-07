@@ -3,7 +3,7 @@ package com.dvgiang.electricitybillingsystem.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Set;
+import java.util.Date;
 
 @Data
 @Entity
@@ -16,12 +16,9 @@ public class Role {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER) //Lay ngay lap tuc
-    //Tạo  bảng trung gian
-    @JoinTable(
-            name = "role_permissions",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
-    )
-    private Set<Permission> permissions;
+    @Column(name = "created_at")
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }

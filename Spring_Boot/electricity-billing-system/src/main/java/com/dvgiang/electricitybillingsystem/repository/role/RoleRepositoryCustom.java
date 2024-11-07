@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface RoleRepositoryCustom {
     Optional<Role> getRoleByName(String name);
+    Long getRoleIDByName(String name);
 }

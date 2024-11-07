@@ -18,39 +18,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig {
-  private final JwtAuthenFilter jwtAuthenFilter;
-  private final AuthenticationProvider authenticationProvider;
+    private final JwtAuthenFilter jwtAuthenFilter;
+    private final AuthenticationProvider authenticationProvider;
 
-  @Bean
-  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(request -> request
-            .requestMatchers("/auth/**", "/visitor/**").permitAll()
-//            .requestMatchers("/admin/**").hasRole("ADMIN")
-//            .requestMatchers("/technician/**").hasRole("TECHNICIAN")
-            .anyRequest().authenticated()
-        )
-        .exceptionHandling(e -> e
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(request -> request
+                                .requestMatchers("/auth/**", "/visitor/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .exceptionHandling(e -> e
 //                .authenticationEntryPoint((request, response, authException) -> {
 //                    response.setStatus(401);
 //                    response.getWriter().write("Please provide token!");
 //                })
-            .accessDeniedHandler((request, response, accessDeniedException) -> {
-                response.setStatus(403);
-                response.setContentType("application/json");
+                                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                                    response.setStatus(403);
+                                    response.setContentType("application/json");
 
-                String jsonResponse = (new ObjectMapper()).writeValueAsString(
-                        BaseResponse.fail("Access is not allowed!")
-                );
-                response.getWriter().write(jsonResponse);
-            })
-        )
-        .sessionManagement(sess -> sess
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
-        .authenticationProvider(authenticationProvider)
-        .addFilterBefore(jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
-  }
+                                    String jsonResponse = (new ObjectMapper()).writeValueAsString(
+                                            BaseResponse.fail("Access is not allowed!")
+                                    );
+                                    response.getWriter().write(jsonResponse);
+                                })
+                )
+                .sessionManagement(sess -> sess
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
+    }
 }

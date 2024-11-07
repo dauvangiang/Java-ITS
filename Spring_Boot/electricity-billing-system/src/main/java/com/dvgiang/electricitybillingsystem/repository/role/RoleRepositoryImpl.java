@@ -24,4 +24,13 @@ public class RoleRepositoryImpl extends BaseRepository implements RoleRepository
                         .fetchOne()
         );
     }
+
+    @Override
+    public Long getRoleIDByName(String name) {
+        QRole qRole = QRole.role;
+        return query.from(qRole)
+            .select(qRole.id)
+            .where(qRole.name.eq(name))
+            .fetchOne();
+    }
 }

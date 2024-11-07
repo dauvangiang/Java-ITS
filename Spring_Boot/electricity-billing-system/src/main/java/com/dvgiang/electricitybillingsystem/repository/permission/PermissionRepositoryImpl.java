@@ -3,10 +3,8 @@ package com.dvgiang.electricitybillingsystem.repository.permission;
 import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.entity.QPermission;
 import com.dvgiang.electricitybillingsystem.entity.QRole;
-import com.dvgiang.electricitybillingsystem.entity.QUser;
+import com.dvgiang.electricitybillingsystem.entity.QRolePermission;
 import com.dvgiang.electricitybillingsystem.repository.BaseRepository;
-import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.JPAExpressions;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
@@ -22,12 +20,12 @@ public class PermissionRepositoryImpl extends BaseRepository implements Permissi
     public List<Permission> getPermissionsByRoleID(Long id) {
         QPermission qPermission = QPermission.permission;
         QRole qRole = QRole.role;
+        QRolePermission qRolePermission = QRolePermission.rolePermission;
 
         return query.select(qPermission)
-                .from(qRole)
-                .join(qRole.permissions, qPermission)
-                .where(qRole.id.eq(id))
+                .from(qPermission)
+                .innerJoin(qRolePermission).on(qRolePermission.permissionId.eq(qPermission.id))
+                .where(qRolePermission.roleId.eq(id))
                 .fetch();
-
     }
 }

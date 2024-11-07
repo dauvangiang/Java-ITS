@@ -17,28 +17,21 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(nullable = false)
+    @Column(name = "phone")
     private String phone;
 
-    @Column(nullable = false)
+    @Column(name = "address")
     private String address;
+
+    @Column(name = "status")
+    private Integer status; //0: hủy dịch vụ, 1: đang sử dụng dịch vụ
 
     @Column(name = "created_at")
     private Date createdAt;
 
     @Column(name = "updated_at")
     private Date updatedAt;
-
-    @Column(name = "status")
-    private Integer status; //0: hủy dịch vụ, 1: đang sử dụng dịch vụ
-
-    @PrePersist
-    public void prePersist() {
-        if (status == null) {
-            status = 1;
-        }
-    }
 }

@@ -15,4 +15,8 @@ public class RoleService {
         return roleRepository.getRoleByName(name)
                 .orElseThrow(() -> new NotFoundException("Role has name = " + name + " does not exist!"));
     }
+
+    public Long getRoleIDByName(String name) {
+        return roleRepository.getRoleIDByName(name);
+    }
 }

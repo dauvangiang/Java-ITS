@@ -1,17 +1,9 @@
 package com.dvgiang.electricitybillingsystem.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.*;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Date;
 
 @Data
 @Builder
@@ -19,62 +11,38 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-public class User implements UserDetails {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username")
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private String phone;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
 
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+//    @ManyToOne
+//    @JoinColumn(name = "role_id")
+//    private Role role;
+    @Column(name = "role_id")
+    private Long roleId;
 
+    @Column(name = "created_at")
+    private Date createdAt;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = this.getRole().getPermissions().stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toSet());
-
-//        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.getRole().getName()));
-
-        return authorities;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
+    @Column(name = "updated_at")
+    private Date updatedAt;
 }
