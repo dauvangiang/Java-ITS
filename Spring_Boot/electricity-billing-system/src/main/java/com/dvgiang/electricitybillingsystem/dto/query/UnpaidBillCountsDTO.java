@@ -1,10 +1,9 @@
 package com.dvgiang.electricitybillingsystem.dto.query;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UnpaidBillCountsDTO {

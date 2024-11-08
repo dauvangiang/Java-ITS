@@ -1,29 +1,27 @@
 package com.dvgiang.electricitybillingsystem.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ElectricityBillRequestDTO {
-    @NotNull(message = "Customer ID is required")
+    @NotNull(message = "Mã khách hàng không được để trống")
     private Long customerId;
 
-    @NotEmpty(message = "Billing period is required")
+    @NotBlank(message = "Chu kỳ thanh toán không được để trống")
     private String billingPeriod;
 
-    @NotNull(message = "Customer ID is required")
+    @NotNull(message = "Số điện đầu không được để trống")
     private Integer previousReading;
 
-    @NotNull(message = "Customer ID is required")
+    @NotNull(message = "Số điện cuối không được để trống")
     private Integer currentReading;
 
     private Date writingDate = new Date();

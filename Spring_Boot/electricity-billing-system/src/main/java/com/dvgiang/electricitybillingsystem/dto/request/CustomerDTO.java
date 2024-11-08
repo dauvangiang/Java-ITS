@@ -1,27 +1,28 @@
 package com.dvgiang.electricitybillingsystem.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerDTO {
-    @NotNull(message = "id is required")
+    @NotNull(message = "Mã số không được để trống, đặt -1 trong trường hợp tạo mới")
     private Long id;
 
-    @NotEmpty(message = "fullname is required")
+    @NotBlank(message = "Họ tên đầy đủ không được để trống")
     private String fullName;
 
-    @NotEmpty(message = "phone number is required")
+    @NotBlank(message = "Số điện thoại không được để trống")
+    @Pattern(regexp = "^0(?!0)\\d{9}$", message = "Số điện thoại là dãy 10 chữ số và bắt đầu bằng 0")
     private String phone;
 
-    @NotEmpty(message = "address is required")
+    @NotBlank(message = "Địa chỉ không được để trống")
     private String address;
 
     private Integer status = 1;

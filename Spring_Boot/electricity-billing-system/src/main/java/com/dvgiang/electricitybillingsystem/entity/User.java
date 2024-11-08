@@ -5,7 +5,8 @@ import lombok.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,9 +35,6 @@ public class User {
     @Column(name = "address")
     private String address;
 
-//    @ManyToOne
-//    @JoinColumn(name = "role_id")
-//    private Role role;
     @Column(name = "role_id")
     private Long roleId;
 

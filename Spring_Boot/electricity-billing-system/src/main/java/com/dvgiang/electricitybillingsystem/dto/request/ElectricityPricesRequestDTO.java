@@ -1,32 +1,30 @@
 package com.dvgiang.electricitybillingsystem.dto.request;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ElectricityPricesRequestDTO {
-    @NotNull(message = "id is required!")
+    @NotNull(message = "Mã số không được để trống")
     private Long id;
 
-    @NotEmpty(message = "name is required!")
+    @NotBlank(message = "Tên không được để trống")
     private String name;
 
-    @NotNull(message = "minUse is required!")
+    @NotNull(message = "Mức sử dụng điện tối thiếu không được để trống")
     private Integer minUse;
 
-    @NotNull(message = "maxUse is required!")
+    @NotNull(message = "Mức sử dụng điện tối đa không được để trống")
     private Integer maxUse;
 
-    @NotNull(message = "price is required!")
+    @NotNull(message = "Giá tiền không được để trống")
     private Float price;
 
     private Integer status = 1;
