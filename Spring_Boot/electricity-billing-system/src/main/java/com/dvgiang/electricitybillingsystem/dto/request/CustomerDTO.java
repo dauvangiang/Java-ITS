@@ -15,7 +15,7 @@ public class CustomerDTO {
     @NotNull(message = "Mã số không được để trống, đặt -1 trong trường hợp tạo mới")
     private Long id;
 
-    @NotBlank(message = "Họ tên đầy đủ không được để trống")
+    @NotBlank(message = "Họ tên không được để trống")
     private String fullName;
 
     @NotBlank(message = "Số điện thoại không được để trống")
@@ -24,8 +24,4 @@ public class CustomerDTO {
 
     @NotBlank(message = "Địa chỉ không được để trống")
     private String address;
-
-    private Integer status = 1;
-
-    private Date updatedAt = new Date();
 }

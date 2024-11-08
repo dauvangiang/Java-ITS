@@ -5,13 +5,12 @@ import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.exception.ConflictException;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
-import com.dvgiang.electricitybillingsystem.mapper.CustomerMapper;
+import com.dvgiang.electricitybillingsystem.mapper.customer.CustomerMapper;
 import com.dvgiang.electricitybillingsystem.repository.customer.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -37,7 +36,6 @@ public class CustomerService {
 
     public Customer createCustomer(CustomerDTO customerDTO) {
         Customer customer = mapper.toCustomer(customerDTO);
-        customer.setCreatedAt(new Date());
 
         log.info("Created new customer");
 

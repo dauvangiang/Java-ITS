@@ -1,7 +1,7 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
-import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.dvgiang.electricitybillingsystem.service.UserService;
@@ -19,10 +19,9 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@Valid @RequestBody RegisterDTO registerDTO) {
-//    return ResponseEntity.(userService.creatNewUser(registerDTO));
+    public ResponseEntity<Object> register(@Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(
-                BaseResponse.ok(userService.creatNewUser(registerDTO)),
+                BaseResponse.ok(userService.creatNewUser(userDTO)),
                 HttpStatus.CREATED);
     }
 

@@ -1,9 +1,9 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesDTO;
 import com.dvgiang.electricitybillingsystem.exception.NotFoundException;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
-import com.dvgiang.electricitybillingsystem.mapper.ElectricityPricesMapper;
+import com.dvgiang.electricitybillingsystem.mapper.electricityprices.ElectricityPricesMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricityprices.ElectricityPricesRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class ElectricityPricesService {
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
     }
 
-    public ElectricityPrices createElectricityPrices(ElectricityPricesRequestDTO priceDTO) {
+    public ElectricityPrices createElectricityPrices(ElectricityPricesDTO priceDTO) {
         ElectricityPrices price = mapper.toPrice(priceDTO);
         price.setCreatedAt(new Date());
 
@@ -37,7 +37,7 @@ public class ElectricityPricesService {
         return electricityPricesRepo.save(price);
     }
 
-    public ElectricityPrices updateElectricityPrices(ElectricityPricesRequestDTO priceDTO) {
+    public ElectricityPrices updateElectricityPrices(ElectricityPricesDTO priceDTO) {
         ElectricityPrices price = electricityPricesRepo.getElectricityPricesById(priceDTO.getId())
                 .orElseThrow(() -> new NotFoundException("Electricity prices does not exist!"));
 

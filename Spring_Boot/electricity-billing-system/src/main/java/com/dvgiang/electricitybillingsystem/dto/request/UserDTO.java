@@ -10,7 +10,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RegisterDTO {
+public class UserDTO {
     @NotBlank(message = "Họ tên không được để trống")
     private String fullName;
 
@@ -36,6 +36,4 @@ public class RegisterDTO {
             message = "Mật khẩu phải chứa chữ cái, số và cả ký tự đặc biệt"
     )
     private String password;
-
-    private Date updatedAt = new Date();
 }

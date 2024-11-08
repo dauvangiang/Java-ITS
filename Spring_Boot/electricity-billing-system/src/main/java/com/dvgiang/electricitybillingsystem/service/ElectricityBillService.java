@@ -1,10 +1,10 @@
 package com.dvgiang.electricitybillingsystem.service;
 
-import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillRequestDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillDTO;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
-import com.dvgiang.electricitybillingsystem.mapper.ElectricityBillMapper;
+import com.dvgiang.electricitybillingsystem.mapper.electricitybill.ElectricityBillMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricitybill.ElectricityBillRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class ElectricityBillService {
     private final ElectricityBillRepo billRepo;
     private final ElectricityBillMapper mapper;
 
-    public ElectricityBill writeElectricityBilling(ElectricityBillRequestDTO requestDTO) {
+    public ElectricityBill writeElectricityBilling(ElectricityBillDTO requestDTO) {
         Customer customer = customerService.getCustomerById(requestDTO.getCustomerId());
 
         List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices(true, "asc");

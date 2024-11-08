@@ -1,11 +1,11 @@
 package com.dvgiang.electricitybillingsystem.service;
 
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
-import com.dvgiang.electricitybillingsystem.dto.request.RegisterDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.AuthenticationResponseDTO;
 import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.entity.User;
-import com.dvgiang.electricitybillingsystem.mapper.UserMapper;
+import com.dvgiang.electricitybillingsystem.mapper.user.UserMapper;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -26,18 +25,13 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenManager;
     private final JwtService jwtService;
-    private final RoleService roleService;
     private final UserRepository userRepository;
-    private final UserMapper mapper;
     private final PermissionService permissionService;
+    private final UserMapper mapper;
 
-    public User creatNewUser(RegisterDTO registerDTO) {
-        registerDTO.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
-
-        User user = mapper.toUser(registerDTO);
-        user.setCreatedAt(new Date());
-        user.setRoleId(roleService.getRoleIDByName("TECHNICIAN"));
-
+    public User creatNewUser(UserDTO userDTO) {
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User user = mapper.toUser(userDTO);
         return userRepository.save(user);
     }
 

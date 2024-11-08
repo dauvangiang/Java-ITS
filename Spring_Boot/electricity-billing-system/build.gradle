@@ -49,10 +49,6 @@ dependencies {
     //json format for logging
     implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
 
-    //MapStruct
-    implementation 'org.mapstruct:mapstruct:1.6.0'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.0'
-
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
     annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
 

@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ElectricityPricesRequestDTO {
+public class ElectricityPricesDTO {
     @NotNull(message = "Mã số không được để trống")
     private Long id;
 
@@ -26,8 +26,4 @@ public class ElectricityPricesRequestDTO {
 
     @NotNull(message = "Giá tiền không được để trống")
     private Float price;
-
-    private Integer status = 1;
-
-    private Date updatedAt = new Date();
 }

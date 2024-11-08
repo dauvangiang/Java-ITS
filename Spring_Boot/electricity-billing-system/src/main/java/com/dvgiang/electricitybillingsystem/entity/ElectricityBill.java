@@ -18,7 +18,6 @@ public class ElectricityBill {
     private Long id;
 
     @Column(name = "customer_id")
-//    private Customer customer;
     private Long customerId;
 
     @Column(name = "writing_date")

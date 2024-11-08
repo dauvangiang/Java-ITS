@@ -1,6 +1,6 @@
 package com.dvgiang.electricitybillingsystem.controller;
 
-import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesRequestDTO;
+import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.service.ElectricityPricesService;
 import jakarta.validation.Valid;
@@ -35,18 +35,18 @@ public class ElectricityPricesController {
 
     @PreAuthorize("hasAuthority('WRITE_E_PRICES')")
     @PostMapping("/create")
-    public ResponseEntity<Object> createElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
+    public ResponseEntity<Object> createElectricityPrices(@Valid @RequestBody ElectricityPricesDTO electricityPricesDTO) {
         return new ResponseEntity<>(
-                BaseResponse.ok(electricityPricesService.createElectricityPrices(electricityPricesRequestDTO)),
+                BaseResponse.ok(electricityPricesService.createElectricityPrices(electricityPricesDTO)),
                 HttpStatus.CREATED
         );
     }
 
     @PreAuthorize("hasAuthority('UPDATE_E_PRICES')")
     @PostMapping("/update")
-    public ResponseEntity<Object> updateElectricityPrices(@Valid @RequestBody ElectricityPricesRequestDTO electricityPricesRequestDTO) {
+    public ResponseEntity<Object> updateElectricityPrices(@Valid @RequestBody ElectricityPricesDTO electricityPricesDTO) {
         return ResponseEntity.ok(
-                BaseResponse.ok(electricityPricesService.updateElectricityPrices(electricityPricesRequestDTO))
+                BaseResponse.ok(electricityPricesService.updateElectricityPrices(electricityPricesDTO))
         );
     }
 
