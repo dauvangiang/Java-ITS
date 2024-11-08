@@ -18,19 +18,19 @@ public class Ex3_Caculator {
 
         double res = 0;
         switch (opt) {
-            case '+': // Nếu là phép cộng (+)
+            case '+': //cộng (+)
                 res = a + b;
                 break;
-            case '-': // Nếu là phép trừ (-)
+            case '-': //trừ (-)
                 res = a - b;
                 break;
-            case 'x': // Nếu là phép nhân (x)
+            case 'x': //nhân (x)
                 res = a * b;
                 break;
-            case ':': // Nếu là phép chia (:)
+            case ':': //chia (:)
                 res = a / b;
                 break;
-            default: // Nếu người dùng chọn bất kỳ ký tự nào không hợp lệ
+            default: // Nếu chọn bất kỳ ký tự nào không hợp lệ
                 System.out.println("Không có phép toán tương ứng!");
                 return;
         }

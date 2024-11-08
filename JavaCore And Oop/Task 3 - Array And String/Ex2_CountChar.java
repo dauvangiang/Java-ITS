@@ -11,7 +11,7 @@ public class Ex2_CountChar {
         int cnt = 0;
         // Lặp qua từng ký tự trong chuỗi
         for (int i = 0; i < str.length(); i++) { //str.length(): độ dài chuỗi
-            if (c == str.charAt(i)) { //String trong java không hỗ trợ var[index]
+            if (c == str.charAt(i)) {
                 cnt++;
             }
         }

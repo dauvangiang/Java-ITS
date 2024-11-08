@@ -46,7 +46,6 @@ abstract class Employee {
     }
 }
 
-// Extends: Lớp FullTimeEmployee kế thừa từ lớp Employee
 class FullTimeEmployee extends Employee {
     private double salary;
 
@@ -55,7 +54,6 @@ class FullTimeEmployee extends Employee {
         this.salary = salary;
     }
 
-    // Triển khai phương thức trừu tượng của lớp cha
     public double salaryReceived() {
         return getBenefit() + salary;
     }
@@ -68,7 +66,6 @@ class FullTimeEmployee extends Employee {
     }
 }
 
-// Extends: Lớp PartTimeEmployee kế thừa từ lớp Employee
 class PartTimeEmployee extends Employee {
     private double salaryPerHour;
     private float workingHoursPerMonth;
@@ -79,7 +76,6 @@ class PartTimeEmployee extends Employee {
         this.workingHoursPerMonth = workingHoursPerMonth;
     }
 
-    // Triển khai phương thức trừu tượng của lớp cha
     public double salaryReceived() {
         return getBenefit() + salaryPerHour * workingHoursPerMonth;
     }

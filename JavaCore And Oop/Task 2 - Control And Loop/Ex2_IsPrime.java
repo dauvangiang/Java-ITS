@@ -2,9 +2,9 @@ import java.util.Scanner;
 
 public class Ex2_IsPrime {
     public static boolean isPrime(long n) {
-        // Kiểm tra nếu n <= 3 và n > 1 thì n là số nguyên tố và ngược lại
+        //Nếu n <= 3 và n > 1 thì n là số nguyên tố
         if (n <= 3) return n > 1;
-        // Nếu n là số chẵn hoặc số chia hết cho 3 thì không phải là số nguyên tố
+        // Nếu n là số chẵn hoặc chia hết cho 3 thì không phải số nguyên tố
         if (n % 2 == 0 || n % 3 == 0) return false;
         long temp = (long)Math.sqrt(n);
         // Số nguyên tố lớn hơn 3 có dạng 6k +- 1
@@ -20,10 +20,10 @@ public class Ex2_IsPrime {
         Scanner inp = new Scanner(System.in);
         System.out.print("Nhập một số nguyên dương bất kỳ: ");
         long n = inp.nextLong();
-        // Nếu n là số nguyên tố
+
         if (isPrime(n)) {
             System.out.println(n + " là một số nguyên tố!");
-        } else { // Ngược lại
+        } else {
             System.out.println(n + " không phải là số nguyên tố!");
         }
     }

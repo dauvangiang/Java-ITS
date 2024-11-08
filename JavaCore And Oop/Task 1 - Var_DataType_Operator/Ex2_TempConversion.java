@@ -1,14 +1,17 @@
 import java.util.Scanner;
 
 public class Ex2_TempConversion {
-    // Hàm chuyển đổi nhiệt độ từ Celsius sang Fahrenheit
+    public static final float FACTOR = 9/5f;
+    public static final float OFFSET = 32f;
+
+    //Chuyển nhiệt độ từ Celsius sang Fahrenheit
     public static float cToF(float value) {
-        return value * 9/5 + 32;
+        return value * FACTOR + OFFSET;
     }
 
-    // Hàm chuyển đổi nhiệt độ từ Fahrenheit sang Celsius
+    //Chuyển nhiệt độ từ Fahrenheit sang Celsius
     public static float fToC(float value) {
-        return (value - 32) * 5/9;
+        return (value - OFFSET) / FACTOR;
     }
 
     public static void main(String[] args) {
@@ -17,15 +20,13 @@ public class Ex2_TempConversion {
         System.out.println("Đơn vị chuyển đổi:");
         System.out.println("\tCelsius -> Fahrenheit (1)");
         System.out.println("\tFahrenheit -> Celsius (2)");
-        System.out.print("=> Vui lòng chọn cách chuyển đổi nhiệt độ: ");
+        System.out.print("=> Chọn cách chuyển đổi nhiệt độ: ");
 
         int type = inp.nextInt();
 
-        // Kiểm tra lựa chọn của người dùng có khớp với các giá trị đã quy ước đc phép chọn
-        // Nếu không khớp => thực hiện khối lệnh if
         if (type != 1 && type != 2) {
             System.out.println("Không có kiểu chuyển đổi phù hợp!");
-            return; // Dừng chương trình khi thực hiện xong khối lệnh
+            return;
         }
 
         System.out.print("Nhập giá trị nhiêt độ cần đổi: "); float val = inp.nextFloat();

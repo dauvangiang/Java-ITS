@@ -9,12 +9,10 @@ public class Ex2_ShapeManagement {
 
 }
 
-//Shape: Giao dien de cac lop ke thua va trien khai
 interface Shape {
     float calculateArea();
 }
 
-// Triển khai lớp Circle từ Shape interface
 class Circle implements Shape {
     private static final float PI = 3.1415F;
     private final float r;
@@ -25,13 +23,11 @@ class Circle implements Shape {
 
     public float getR () { return r; }
 
-    //Triển khai phương thức trong Interface
     public float calculateArea() {
         return r * r * PI;
     }
 }
 
-// Triển khai lớp Rectangle từ Shape interface
 class Rectangle implements Shape {
     private final float length;
     private final float width;
@@ -44,7 +40,6 @@ class Rectangle implements Shape {
     public float getLength() { return length; }
     public float getWidth() { return width; }
 
-    //Triển khai phương thức calculateArea() trong Interface
     public float calculateArea() {
         return length * width;
     }

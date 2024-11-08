@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class Ex1_LibraryManagement {
     public static Scanner inp = new Scanner(System.in);
-    // Khai báo đối tượng books thuộc lớp ArrayList để lưu trữ sách
     public static ArrayList<String> books = new ArrayList<>();
 
     // Thêm sách

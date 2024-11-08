@@ -53,21 +53,16 @@ class BankAccount {
     private long balance;
 
     //Constructor
-    // Hàm tạo mặc định
     public BankAccount() {
-        //this: đại diện cho đối tượng hiện tại
-        //this.<attribute>: gọi đến thuộc tính của đối tượng hiện tại
         this.accountNumber = "000000";
         this.balance = 0;
         System.out.print("Xin chào: 000000");
     }
-    // Hàm tạo 1 tham số
     public BankAccount(String accNumber) {
         System.out.print("Xin chào: " + accNumber);
         this.accountNumber = accNumber;
         this.balance = 0;
     }
-    // Hàm tạo 2 tham sô
     public BankAccount(String accNumber, long balance) {
         System.out.print("Xin chào: " + accNumber);
         this.accountNumber = accNumber;
