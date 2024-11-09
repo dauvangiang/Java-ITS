@@ -2,7 +2,7 @@ package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityPricesDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
-import com.dvgiang.electricitybillingsystem.service.ElectricityPricesService;
+import com.dvgiang.electricitybillingsystem.service.electricityprices.ElectricityPricesService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

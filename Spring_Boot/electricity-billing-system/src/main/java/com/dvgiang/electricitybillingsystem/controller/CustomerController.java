@@ -2,7 +2,7 @@ package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.CustomerDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
-import com.dvgiang.electricitybillingsystem.service.CustomerService;
+import com.dvgiang.electricitybillingsystem.service.customer.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("admin/customers")
 public class CustomerController {
+//    private final CustomerService customerService;
     private final CustomerService customerService;
 
     @PreAuthorize("hasAuthority('READ_CUSTOMERS')")
@@ -28,7 +29,7 @@ public class CustomerController {
     @GetMapping()
     public ResponseEntity<Object> getAllCustomers() {
         return ResponseEntity.ok(
-                BaseResponse.ok(customerService.getAllCustomers())
+                BaseResponse.ok(customerService.getCustomers())
         );
     }
 

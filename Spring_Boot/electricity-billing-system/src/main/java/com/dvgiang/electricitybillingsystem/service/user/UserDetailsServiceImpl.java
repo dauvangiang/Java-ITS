@@ -1,8 +1,9 @@
-package com.dvgiang.electricitybillingsystem.service;
+package com.dvgiang.electricitybillingsystem.service.user;
 
 import com.dvgiang.electricitybillingsystem.dto.UserDetailsImpl;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
+import com.dvgiang.electricitybillingsystem.service.permission.PermissionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

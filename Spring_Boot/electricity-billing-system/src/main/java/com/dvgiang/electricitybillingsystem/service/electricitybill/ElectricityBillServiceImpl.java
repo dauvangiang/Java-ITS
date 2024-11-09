@@ -1,50 +1,54 @@
-package com.dvgiang.electricitybillingsystem.service;
+package com.dvgiang.electricitybillingsystem.service.electricitybill;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillDTO;
-import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
+import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
 import com.dvgiang.electricitybillingsystem.mapper.electricitybill.ElectricityBillMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricitybill.ElectricityBillRepo;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.dvgiang.electricitybillingsystem.service.BaseService;
+import com.dvgiang.electricitybillingsystem.service.customer.CustomerService;
+import com.dvgiang.electricitybillingsystem.service.electricityprices.ElectricityPricesService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
-public class ElectricityBillService {
-    private final CustomerService customerService;
-    private final ElectricityPricesService electricityPricesService;
-    private final ElectricityBillRepo billRepo;
-    private final ElectricityBillMapper mapper;
+public class ElectricityBillServiceImpl extends BaseService<ElectricityBillRepo, ElectricityBillMapper> implements ElectricityBillService{
+    @Autowired
+    private CustomerService customerService;
+    @Autowired
+    private ElectricityPricesService electricityPricesService;
 
-    public ElectricityBill writeElectricityBilling(ElectricityBillDTO requestDTO) {
-        Customer customer = customerService.getCustomerById(requestDTO.getCustomerId());
+    public ElectricityBillServiceImpl(ElectricityBillRepo repository, ElectricityBillMapper mapper) {
+        super(repository, mapper);
+    }
+
+    @Override
+    public ElectricityBill writeElectricityBilling(ElectricityBillDTO dto) {
+        Customer customer = customerService.getCustomerById(dto.getCustomerId());
 
         List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices(true, "asc");
 
         //Số điện đã dùng
-        int used = requestDTO.getCurrentReading() - requestDTO.getPreviousReading();
+        int used = dto.getCurrentReading() - dto.getPreviousReading();
 
         float totalCost = calcTotalCost(used, listElectricityPrices);
 
-        ElectricityBill bill = mapper.toBill(requestDTO);
+        ElectricityBill bill = mapper.toBill(dto);
         bill.setCreatedAt(new Date());
         bill.setCustomerId(customer.getId());
         bill.setTotalCost(totalCost);
 
-        log.info("Create new electricity bill for customer (customerId: {})", requestDTO.getCustomerId());
-
-        return billRepo.save(bill);
+        return repository.save(bill);
     }
 
+    @Override
     public List<ElectricityBill> getUnpaidBillsByCustomerId(Long id) {
         customerService.getCustomerById(id);
-        return billRepo.getUnpaidBillsByCustomerId(id);
+        return repository.getUnpaidBillsByCustomerId(id);
     }
 
     private float calcTotalCost(int used, List<ElectricityPrices> listPrices) {

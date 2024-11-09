@@ -2,7 +2,7 @@ package com.dvgiang.electricitybillingsystem.controller;
 
 import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
-import com.dvgiang.electricitybillingsystem.service.ElectricityBillService;
+import com.dvgiang.electricitybillingsystem.service.electricitybill.ElectricityBillService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-//@RequestMapping("/electricity_bills")
 @RequiredArgsConstructor
 public class ElectricityBillController {
     private final ElectricityBillService billService;

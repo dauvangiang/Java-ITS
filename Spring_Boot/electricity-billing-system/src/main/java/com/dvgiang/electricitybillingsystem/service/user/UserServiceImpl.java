@@ -1,4 +1,4 @@
-package com.dvgiang.electricitybillingsystem.service;
+package com.dvgiang.electricitybillingsystem.service.user;
 
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
@@ -7,8 +7,10 @@ import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import com.dvgiang.electricitybillingsystem.mapper.user.UserMapper;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import com.dvgiang.electricitybillingsystem.service.BaseService;
+import com.dvgiang.electricitybillingsystem.service.JwtService;
+import com.dvgiang.electricitybillingsystem.service.permission.PermissionService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,35 +20,41 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
-public class UserService {
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenManager;
-    private final JwtService jwtService;
-    private final UserRepository userRepository;
-    private final PermissionService permissionService;
-    private final UserMapper mapper;
+public class UserServiceImpl extends BaseService<UserRepository, UserMapper> implements UserService {
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private AuthenticationManager authenManager;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private PermissionService permissionService;
 
-    public User creatNewUser(UserDTO userDTO) {
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user = mapper.toUser(userDTO);
-        return userRepository.save(user);
+    public UserServiceImpl(UserRepository repository, UserMapper mapper) {
+        super(repository, mapper);
     }
 
+    @Override
+    public User createUser(UserDTO dto) {
+        dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+        User user = mapper.toUser(dto);
+        return repository.save(user);
+    }
+
+    @Override
     public AuthenticationResponseDTO authentication(LoginDTO loginDTO) {
         //Xác thực thông tin đăng nhập, đối tượng Authentication được tạo ra
         //Có ngoại lệ nếu ko thành công
         authenManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginDTO.getUsername(), //thông tin định danh
-                        loginDTO.getPassword() //thông tin bảo mật
+                        loginDTO.getUsername(),
+                        loginDTO.getPassword()
                 )
         );
 
         //Lấy thông tin người dùng sau khi xác thực thành công
-        User user = userRepository.getUserByUsername(loginDTO.getUsername())
+        User user = repository.getUserByUsername(loginDTO.getUsername())
                 .orElseThrow();
         String token = jwtService.generateToken(user.getUsername());
 
@@ -57,11 +65,12 @@ public class UserService {
                 .build();
     }
 
+    @Override
     public List<Permission> getPermissions() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
             String username = authentication.getName();
-            Long roleID = userRepository.getRoleIDByUsername(username);
+            Long roleID = repository.getRoleIDByUsername(username);
             return permissionService.getPermissionsByRoleID(roleID);
         }
         return null;

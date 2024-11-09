@@ -73,14 +73,6 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
             .and(qCustomer.id.eq(id))
             .and(qCustomer.status.eq(1));
 
-//        UnpaidBillCountsDTO billCounts = query
-//            .select(Projections.constructor(UnpaidBillCountsDTO.class, qCustomer.id, qBill.count()))
-//            .from(qCustomer)
-//            .leftJoin(qBill).on(leftJoinBuilder)
-//            .where(whereBuilder)
-//            .groupBy(qCustomer.id)
-//            .fetchOne();
-
         //Subquery: count unpaid bill by customer id
         UnpaidBillCountsDTO billCounts = query
             .select(Projections.constructor(

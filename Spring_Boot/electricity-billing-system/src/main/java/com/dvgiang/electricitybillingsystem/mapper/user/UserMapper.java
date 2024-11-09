@@ -2,7 +2,7 @@ package com.dvgiang.electricitybillingsystem.mapper.user;
 
 import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
 import com.dvgiang.electricitybillingsystem.entity.User;
-import com.dvgiang.electricitybillingsystem.service.RoleService;
+import com.dvgiang.electricitybillingsystem.service.role.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

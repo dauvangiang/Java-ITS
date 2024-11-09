@@ -4,7 +4,7 @@ import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
-import com.dvgiang.electricitybillingsystem.service.UserService;
+import com.dvgiang.electricitybillingsystem.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ public class UserController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(@Valid @RequestBody UserDTO userDTO) {
         return new ResponseEntity<>(
-                BaseResponse.ok(userService.creatNewUser(userDTO)),
+                BaseResponse.ok(userService.createUser(userDTO)),
                 HttpStatus.CREATED);
     }
 

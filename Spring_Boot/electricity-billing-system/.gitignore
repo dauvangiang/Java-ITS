@@ -41,3 +41,7 @@ out/
 
 ### Logging ###
 **/logs/
+
+### env ###
+.env
+.env[.properties]
