@@ -43,5 +43,5 @@ out/
 **/logs/
 
 ### env ###
-**/.env
-**/.env[.properties]
+.env
+.env[.properties]
