@@ -27,13 +27,13 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
         QCustomer qCustomer = QCustomer.customer;
 
         BooleanBuilder builder = new BooleanBuilder()
-            .and(qCustomer.id.eq(id))
-            .and(qCustomer.status.eq(1));
+                .and(qCustomer.id.eq(id))
+                .and(qCustomer.status.eq(1));
 
         Customer customer = query.from(qCustomer)
-            .select(qCustomer)
-            .where(builder)
-            .fetchOne();
+                .where(builder)
+                .select(qCustomer)
+                .fetchOne();
 
         return Optional.ofNullable(customer);
     }
@@ -42,8 +42,6 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
     public List<Customer> getCustomers() {
         QCustomer qCustomer = QCustomer.customer;
         return query.from(qCustomer)
-                //create CustomerDTO obj
-//                .select(Projections.fields(CustomerDTO.class, qCustomer.fullName, qCustomer.phone))
                 .select(qCustomer)
                 .orderBy(qCustomer.id.asc())
                 .fetch();
@@ -52,11 +50,11 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
     public List<Customer> getCustomersByPage(int page, long limit) {
         QCustomer qCustomer = QCustomer.customer;
         return query
-            .from(qCustomer)
-            .select(qCustomer)
-            .offset(limit * (page - 1)) //Số bản ghi bị bỏ qua
-            .limit(limit) //Số bản ghi tối đa mỗi lần truy vấn
-            .fetch();
+                .from(qCustomer)
+                .select(qCustomer)
+                .offset(limit * (page - 1)) //Số bản ghi bị bỏ qua
+                .limit(limit) //Số bản ghi tối đa mỗi lần truy vấn
+                .fetch();
     }
 
     @Override
@@ -64,27 +62,25 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
         QCustomer qCustomer = QCustomer.customer;
         QElectricityBill qBill = QElectricityBill.electricityBill;
 
-        BooleanBuilder leftJoinBuilder = new BooleanBuilder()
-                .and(qCustomer.id.eq(qBill.customerId))
-
-            .and(qBill.paymentStatus.eq(0)); //unpaid
-
-        BooleanBuilder whereBuilder = new BooleanBuilder()
-            .and(qCustomer.id.eq(id))
-            .and(qCustomer.status.eq(1));
+//        BooleanBuilder leftJoinBuilder = new BooleanBuilder()
+//                .and(qCustomer.id.eq(qBill.customerId))
+//                .and(qBill.paymentStatus.eq(0)); //unpaid
+//
+//        BooleanBuilder whereBuilder = new BooleanBuilder()
+//                .and(qCustomer.id.eq(id))
+//                .and(qCustomer.status.eq(1));
 
         //Subquery: count unpaid bill by customer id
-        UnpaidBillCountsDTO billCounts = query
-            .select(Projections.constructor(
-                UnpaidBillCountsDTO.class,
-                qCustomer.id,
-                JPAExpressions.select(qBill.id.count())
-                    .from(qBill)
-                    .where(qBill.customerId.eq(id).and(qBill.paymentStatus.eq(0)))
+        UnpaidBillCountsDTO billCounts = query.from(qCustomer)
+                .where(qCustomer.id.eq(id))
+                .select(Projections.constructor(
+                        UnpaidBillCountsDTO.class,
+                        qCustomer.id,
+                        JPAExpressions.select(qBill.id.count())
+                                .from(qBill)
+                                .where(qBill.customerId.eq(id).and(qBill.paymentStatus.eq(0)))
                 ))
-            .from(qCustomer)
-            .where(qCustomer.id.eq(id))
-            .fetchOne();
+                .fetchOne();
 
         return Optional.ofNullable(billCounts);
     }
@@ -96,7 +92,7 @@ class CustomerRepositoryImpl extends BaseRepository implements CustomerRepositor
         QCustomer qCustomer = QCustomer.customer;
 
         query.update(qCustomer).where(qCustomer.id.eq(id))
-            .set(qCustomer.status, 0)
-            .execute();
+                .set(qCustomer.status, 0)
+                .execute();
     }
 }

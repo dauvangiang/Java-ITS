@@ -1,6 +1,7 @@
 package com.dvgiang.electricitybillingsystem.service.user;
 
 import com.dvgiang.electricitybillingsystem.dto.UserDetailsImpl;
+import com.dvgiang.electricitybillingsystem.dto.query.PermissionActionDTO;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
 import com.dvgiang.electricitybillingsystem.service.permission.PermissionService;
@@ -13,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,12 +27,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.getUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+                .orElseThrow(() -> new UsernameNotFoundException("Thông tin người dùng không tồn tại!"));
 
-        Collection<GrantedAuthority> authorities = permissionService.getPermissionsByRoleID(user.getRoleId()).stream()
-                .map(permission -> new SimpleGrantedAuthority(permission.getName()))
-                .collect(Collectors.toSet());
+//        List<PermissionActionDTO> permissions = (List<PermissionActionDTO>) permissionService.getRolePermissionsByRoleId(user.getRoleId()).get("permissions");
+//
+//        Collection<GrantedAuthority> authorities = permissions.stream()
+//                .map(permission -> new SimpleGrantedAuthority(permission.getPermissionName()))
+//                .collect(Collectors.toSet());
 
-        return new UserDetailsImpl(user, authorities);
+        return new UserDetailsImpl(user, null);
     }
 }

@@ -3,36 +3,32 @@ package com.dvgiang.electricitybillingsystem.service.user;
 import com.dvgiang.electricitybillingsystem.dto.request.LoginDTO;
 import com.dvgiang.electricitybillingsystem.dto.request.UserDTO;
 import com.dvgiang.electricitybillingsystem.dto.response.AuthenticationResponseDTO;
-import com.dvgiang.electricitybillingsystem.entity.Permission;
 import com.dvgiang.electricitybillingsystem.entity.User;
 import com.dvgiang.electricitybillingsystem.mapper.user.UserMapper;
 import com.dvgiang.electricitybillingsystem.repository.user.UserRepository;
 import com.dvgiang.electricitybillingsystem.service.BaseService;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
-import com.dvgiang.electricitybillingsystem.service.permission.PermissionService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class UserServiceImpl extends BaseService<UserRepository, UserMapper> implements UserService {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenManager;
-    @Autowired
-    private JwtService jwtService;
-    @Autowired
-    private PermissionService permissionService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenManager;
+    private final JwtService jwtService;
 
-    public UserServiceImpl(UserRepository repository, UserMapper mapper) {
+    public UserServiceImpl(
+            UserRepository repository, UserMapper mapper,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenManager,
+            JwtService jwtService
+    ) {
         super(repository, mapper);
+        this.passwordEncoder = passwordEncoder;
+        this.authenManager = authenManager;
+        this.jwtService = jwtService;
     }
 
     @Override
@@ -63,16 +59,5 @@ public class UserServiceImpl extends BaseService<UserRepository, UserMapper> imp
                 .type("JWT")
                 .token(token)
                 .build();
-    }
-
-    @Override
-    public List<Permission> getPermissions() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated() && !authentication.getName().equals("anonymousUser")) {
-            String username = authentication.getName();
-            Long roleID = repository.getRoleIDByUsername(username);
-            return permissionService.getPermissionsByRoleID(roleID);
-        }
-        return null;
     }
 }

@@ -1,12 +1,14 @@
 package com.dvgiang.electricitybillingsystem.dto;
 
 import com.dvgiang.electricitybillingsystem.entity.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 public class UserDetailsImpl implements UserDetails {
+    @Getter
     private final User user;
     private final Collection<? extends GrantedAuthority> authorities;
 

@@ -38,7 +38,6 @@ public class JwtService {
     }
 
     public String generateToken(String username) {
-        System.err.println(TOKEN_EXPIRATION_MS);
         return Jwts
                 .builder()
                 .setSubject(username)

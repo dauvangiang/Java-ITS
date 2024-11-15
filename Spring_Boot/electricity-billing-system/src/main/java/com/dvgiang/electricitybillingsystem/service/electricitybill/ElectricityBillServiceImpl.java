@@ -4,12 +4,12 @@ import com.dvgiang.electricitybillingsystem.dto.request.ElectricityBillDTO;
 import com.dvgiang.electricitybillingsystem.entity.Customer;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityBill;
 import com.dvgiang.electricitybillingsystem.entity.ElectricityPrices;
+import com.dvgiang.electricitybillingsystem.enums.PermissionType;
 import com.dvgiang.electricitybillingsystem.mapper.electricitybill.ElectricityBillMapper;
 import com.dvgiang.electricitybillingsystem.repository.electricitybill.ElectricityBillRepo;
 import com.dvgiang.electricitybillingsystem.service.BaseService;
 import com.dvgiang.electricitybillingsystem.service.customer.CustomerService;
 import com.dvgiang.electricitybillingsystem.service.electricityprices.ElectricityPricesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,18 +17,24 @@ import java.util.List;
 
 @Service
 public class ElectricityBillServiceImpl extends BaseService<ElectricityBillRepo, ElectricityBillMapper> implements ElectricityBillService{
-    @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private ElectricityPricesService electricityPricesService;
+    private final CustomerService customerService;
+    private final ElectricityPricesService electricityPricesService;
 
-    public ElectricityBillServiceImpl(ElectricityBillRepo repository, ElectricityBillMapper mapper) {
+    public ElectricityBillServiceImpl(
+            ElectricityBillRepo repository,
+            ElectricityBillMapper mapper,
+            CustomerService customerService,
+            ElectricityPricesService electricityPricesService
+    ) {
         super(repository, mapper);
+        this.customerService = customerService;
+        this.electricityPricesService = electricityPricesService;
     }
 
     @Override
     public ElectricityBill writeElectricityBilling(ElectricityBillDTO dto) {
-        Customer customer = customerService.getCustomerById(dto.getCustomerId());
+        super.getUser("ELECTRICITY_BILL_MANAGEMENT", PermissionType.WRITE);
+        Customer customer = customerService.getCustomerById(dto.getCustomerId(), true);
 
         List<ElectricityPrices> listElectricityPrices = electricityPricesService.getAllElectricityPrices(true, "asc");
 
@@ -47,7 +53,7 @@ public class ElectricityBillServiceImpl extends BaseService<ElectricityBillRepo,
 
     @Override
     public List<ElectricityBill> getUnpaidBillsByCustomerId(Long id) {
-        customerService.getCustomerById(id);
+        customerService.getCustomerById(id, false);
         return repository.getUnpaidBillsByCustomerId(id);
     }
 

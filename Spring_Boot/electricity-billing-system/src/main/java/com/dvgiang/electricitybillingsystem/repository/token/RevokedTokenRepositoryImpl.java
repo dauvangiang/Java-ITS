@@ -1,7 +1,6 @@
 package com.dvgiang.electricitybillingsystem.repository.token;
 
 import com.dvgiang.electricitybillingsystem.entity.QRevokedToken;
-import com.dvgiang.electricitybillingsystem.entity.RevokedToken;
 import com.dvgiang.electricitybillingsystem.repository.BaseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
@@ -20,8 +19,8 @@ public class RevokedTokenRepositoryImpl extends BaseRepository implements Revoke
     public boolean existsByToken(String token) {
         QRevokedToken qToken = QRevokedToken.revokedToken;
         return query.from(qToken)
-                .select(qToken.id)
                 .where(qToken.token.eq(token))
+                .select(qToken.id)
                 .fetchFirst() != null;
     }
 

@@ -24,8 +24,8 @@ public class ElectricityBillRepoImpl extends BaseRepository implements Electrici
                 .and(qBill.paymentStatus.eq(0));
 
         return query.from(qBill)
-                .select(qBill)
                 .where(builder)
+                .select(qBill)
                 .fetch();
     }
 }

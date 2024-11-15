@@ -38,7 +38,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Async
     @Scheduled(cron = "0 0 9 */3 * *")
     public void cleanUpTokens() {
-        log.info("Clean up revoked tokens");
+        log.info("Dọn dẹp token bị thu hồi!");
         Date threeHoursAgo = new Date(System.currentTimeMillis() - 3*60*60*1000);
         tokenRepository.deleteAllOlderThan(threeHoursAgo);
     }

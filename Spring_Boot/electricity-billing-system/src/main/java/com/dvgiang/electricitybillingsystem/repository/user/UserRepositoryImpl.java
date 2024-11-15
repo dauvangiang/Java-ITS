@@ -17,20 +17,19 @@ public class UserRepositoryImpl extends BaseRepository implements UserRepository
     @Override
     public Optional<User> getUserByUsername(String username) {
         QUser qUser = QUser.user;
-        return Optional.ofNullable(
-                query.from(qUser)
-                        .select(qUser)
-                        .where(qUser.username.eq(username))
-                        .fetchOne()
+        return Optional.ofNullable(query.from(qUser)
+                .where(qUser.username.eq(username))
+                .select(qUser)
+                .fetchOne()
         );
     }
 
     @Override
     public Long getRoleIDByUsername(String username) {
         QUser qUser = QUser.user;
-        return query.select(qUser.roleId)
-                .from(qUser)
+        return query.from(qUser)
                 .where(qUser.username.eq(username))
+                .select(qUser.roleId)
                 .fetchOne();
     }
 }

@@ -26,23 +26,18 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers("/auth/**", "/visitor/**").permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("/auth/**", "/visitor/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .exceptionHandling(e -> e
-//                .authenticationEntryPoint((request, response, authException) -> {
-//                    response.setStatus(401);
-//                    response.getWriter().write("Please provide token!");
-//                })
-                                .accessDeniedHandler((request, response, accessDeniedException) -> {
-                                    response.setStatus(403);
-                                    response.setContentType("application/json");
-
-                                    String jsonResponse = (new ObjectMapper()).writeValueAsString(
-                                            BaseResponse.fail("Access is not allowed!")
-                                    );
-                                    response.getWriter().write(jsonResponse);
-                                })
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(403);
+                            response.setContentType("application/json");
+                            String jsonResponse = (new ObjectMapper()).writeValueAsString(
+                                    BaseResponse.fail("Cần xác thực để tiếp tục truy cập tài nguyên!")
+                            );
+                            response.getWriter().write(jsonResponse);
+                        })
                 )
                 .sessionManagement(sess -> sess
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

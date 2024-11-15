@@ -21,6 +21,15 @@ public class RolePermission {
     @Column(name = "permission_id")
     private Long permissionId;
 
+    @Column(name = "can_write")
+    private Boolean canWrite;
+
+    @Column(name = "can_view")
+    private Boolean canView;
+
+    @Column(name = "can_delete")
+    private Boolean canDelete;
+
     @Column(name = "created_at")
     private Date createdAt;
 

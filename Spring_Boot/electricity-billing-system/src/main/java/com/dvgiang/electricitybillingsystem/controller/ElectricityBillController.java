@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,7 +21,6 @@ public class ElectricityBillController {
         );
     }
 
-    @PreAuthorize("hasAuthority('WRITE_BILL')")
     @PostMapping("/technician/electricity_bills/write_electricity_bill")
     public ResponseEntity<Object> writeElectricityBilling(@Valid @RequestBody ElectricityBillDTO requestDTO) {
         return new ResponseEntity<>(

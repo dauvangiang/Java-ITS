@@ -16,7 +16,7 @@ public class RoleServiceImpl extends BaseService<RoleRepository, RoleMapper> imp
     @Override
     public Role getRoleByName(String name) {
         return repository.getRoleByName(name)
-                .orElseThrow(() -> new NotFoundException("Role has name = " + name + " does not exist!"));
+                .orElseThrow(() -> new NotFoundException("Vai trò có tên: " + name + " không tồn tại!"));
     }
 
     @Override

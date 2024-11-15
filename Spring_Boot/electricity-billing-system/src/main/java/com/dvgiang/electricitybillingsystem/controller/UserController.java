@@ -37,9 +37,4 @@ public class UserController {
         jwtService.revokeToken(authHeader);
         return ResponseEntity.ok("Logout Successfully");
     }
-
-    @PostMapping("/permissions")
-    public ResponseEntity<Object> getPermission() {
-        return ResponseEntity.ok(userService.getPermissions());
-    }
 }

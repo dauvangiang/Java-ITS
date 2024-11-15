@@ -1,7 +1,6 @@
 package com.dvgiang.electricitybillingsystem.filter;
 
 import com.dvgiang.electricitybillingsystem.dto.response.BaseResponse;
-import com.dvgiang.electricitybillingsystem.exception.ForbiddenException;
 import com.dvgiang.electricitybillingsystem.service.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
@@ -11,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,7 +64,7 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
                     //Cập nhật chủ sở hữu bối cảnh bảo mật
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
-                    throw new ForbiddenException("Resource cannot be accessed. Please log in again!");
+                    throw new AccountExpiredException("Quyền truy cập bị từ chối, vui lòng đăng nhập lại!");
                 }
             }
         }
@@ -73,13 +73,13 @@ public class JwtAuthenFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
 
             String jsonResponse = (new ObjectMapper()).writeValueAsString(
-                    BaseResponse.fail("JWT token validation failed! " + e.getMessage())
+                    BaseResponse.fail("Xác thực mã thông báo JWT thất bại! " + e.getMessage())
             );
 
             response.getWriter().write(jsonResponse);
             return;
         }
-        catch (ForbiddenException e) {
+        catch (AccountExpiredException e) {
             response.setStatus(403);
             response.setContentType("application/json");
 

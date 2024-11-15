@@ -43,27 +43,21 @@ CREATE TABLE permission
 DEFAULT CHARSET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-INSERT INTO permission (name, title, created_at, updated_at)
-VALUES ("WRITE_CUSTOMER", "Thêm thông tin khách hàng", now(), now()),
-       ("READ_CUSTOMERS", "Xem danh sách thông tin khách hàng", now(), now()),
-       ("READ_CUSTOMER", "Xem thông tin khách hàng", now(), now()),
-       ("DELETE_CUSTOMER", "Xóa thông tin khách hàng", now(), now()),
-       ("UPDATE_CUSTOMER", "Cập nhật thông tin khách hàng", now(), now()),
-       ("WRITE_E_PRICES", "Thêm bậc giá điện", now(), now()),
-       ("READ_E_PRICES", "Xem bậc giá điện", now(), now()),
-       ("DELETE_E_PRICES", "Xóa bậc giá điện", now(), now()),
-       ("UPDATE_E_PRICES", "Cập nhật bậc giá điện", now(), now()),
-       ("WRITE_PERMISSION", "Thêm quyền hạn", now(), now()),
-       ("READ_PERMISSION", "Xem quyền hạn", now(), now()),
-       ("DELETE_PERMISSION", "Xóa quyền hạn", now(), now()),
-       ("UPDATE_PERMISSION", "Cập nhật quyền hạn", now(), now()),
-       ("WRITE_BILL", "Ghi hóa đơn", now(), now());
+INSERT INTO permission (id, name, title, created_at, updated_at)
+VALUES (1, "CUSTOMER_MANAGEMENT", "Quản lý khách hàng", now(), now()),
+		(2, "ELECTRICITY_BILL_MANAGEMENT", "Quản lý hóa đơn tiền điện", now(), now()),
+        (3, "ELECTRICITY_PRICES_MANAGEMENT", "Quản lý bảng giá điện", now(), now()),
+        (4, "ROLE_PERMISSION_MANAGEMENT", "Quản lý quyền hạn", now(), now()),
+        (5, "USER_MANAGEMENT", "Quản lý tài khoản", now(), now());
 
 CREATE TABLE role_permission
 (
     id            BIGINT    NOT NULL AUTO_INCREMENT,
     role_id       BIGINT    NOT NULL COMMENT 'Khóa ngoại đến vai trò',
     permission_id BIGINT    NOT NULL COMMENT 'Khóa ngoại đến quyền hạn',
+    can_write  	  BIT		NOT NULL DEFAULT 0 COMMENT "Quyền ghi: 0 - Không được ghi, 1 - Được ghi",
+    can_view  	  BIT		NOT NULL DEFAULT 0 COMMENT "Quyền xem: 0 - Không được xem, 1 - Được xem",
+    can_delete    BIT		NOT NULL DEFAULT 0 COMMENT "Quyền xóa: 0 - Không được xóa, 1 - Được xóa",
     created_at    TIMESTAMP NOT NULL DEFAULT now(),
     updated_at    TIMESTAMP NOT NULL DEFAULT now(),
     PRIMARY KEY (id),
@@ -73,23 +67,16 @@ CREATE TABLE role_permission
 DEFAULT CHARSET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
-INSERT INTO role_permission (role_id, permission_id, created_at, updated_at)
-VALUES (1, 1, now(), now()),
-       (1, 2, now(), now()),
-       (1, 3, now(), now()),
-       (1, 4, now(), now()),
-       (1, 5, now(), now()),
-       (1, 6, now(), now()),
-       (1, 7, now(), now()),
-       (1, 8, now(), now()),
-       (1, 9, now(), now()),
-       (1, 10, now(), now()),
-       (1, 11, now(), now()),
-       (1, 12, now(), now()),
-       (1, 13, now(), now()),
-       (2, 3, now(), now()),
-       (2, 7, now(), now()),
-       (2, 14, now(), now());
+INSERT INTO role_permission (id, role_id, permission_id, can_write, can_view, can_delete, created_at, updated_at)
+VALUES (1, 1, 1, b'1', b'1', b'1', now(), now()), -- admin: Khach hang - ghi xem xoa
+       (2, 1, 2, b'1', b'1', b'0', now(), now()), -- admin: Hoa don - ghi, xem
+       (3, 1, 3, b'1', b'1', b'1', now(), now()), -- admin: Gia dien - ghi, xem, xoa
+       (4, 1, 4, b'1', b'1', b'1', now(), now()), -- admin: Quyen han - ghi, xem, xoa
+       (5, 1, 5, b'1', b'1', b'1', now(), now()), -- admin: Nguoi dung - ghi, xem xoa
+       (6, 2, 1, b'0', b'1', b'0', now(), now()),
+       (7, 2, 2, b'1', b'1', b'1', now(), now()),
+       (8, 2, 3, b'0', b'1', b'0', now(), now()),
+       (9, 2, 5, b'1', b'1', b'1', now(), now());
 
 CREATE TABLE user
 (

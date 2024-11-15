@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.util.Date;
-
 @Getter
 @Setter
 @NoArgsConstructor

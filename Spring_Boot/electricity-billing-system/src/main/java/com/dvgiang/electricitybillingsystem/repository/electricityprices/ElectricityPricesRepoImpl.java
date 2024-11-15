@@ -23,24 +23,23 @@ public class ElectricityPricesRepoImpl extends BaseRepository implements Electri
     public List<ElectricityPrices> getAllElectricityPrices(boolean isOrderByPrices, String type) {
         QElectricityPrices qPrice = QElectricityPrices.electricityPrices;
 
-         JPAQuery<ElectricityPrices> queryResult = query
-                 .from(qPrice)
-                .select(qPrice)
-                .where(qPrice.status.eq(1));
+        JPAQuery<ElectricityPrices> queryResult = query.from(qPrice)
+                .where(qPrice.status.eq(1))
+                .select(qPrice);
 
-         //default
-         if (!isOrderByPrices || type == null || type.isEmpty()) {
-             return queryResult.fetch();
-         }
-         //order by asc prices
-         else if (type.equals("asc")) {
-             return queryResult.orderBy(qPrice.price.asc()).fetch();
-         }
-         // order by desc prices
-         else if (type.equals("desc")) {
-             return queryResult.orderBy(qPrice.price.desc()).fetch();
-         }
-         return null;
+        //default
+        if (!isOrderByPrices || type == null || type.isEmpty()) {
+            return queryResult.fetch();
+        }
+        //order by asc prices
+        else if (type.equals("asc")) {
+            return queryResult.orderBy(qPrice.price.asc()).fetch();
+        }
+        // order by desc prices
+        else if (type.equals("desc")) {
+            return queryResult.orderBy(qPrice.price.desc()).fetch();
+        }
+        return null;
     }
 
     @Override
@@ -51,11 +50,10 @@ public class ElectricityPricesRepoImpl extends BaseRepository implements Electri
                 .and(qPrice.id.eq(id))
                 .and(qPrice.status.eq(1));
 
-        return Optional.ofNullable(
-                query.from(qPrice)
-                        .select(qPrice)
-                        .where(builder)
-                        .fetchOne()
+        return Optional.ofNullable(query.from(qPrice)
+                .where(builder)
+                .select(qPrice)
+                .fetchOne()
         );
     }
 
